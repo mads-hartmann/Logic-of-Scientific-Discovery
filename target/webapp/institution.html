@@ -1,0 +1,67 @@
+<lift:surround with="default">
+	
+	
+	
+	<lift:bind-at name="content-top">
+		<h3>Add an institution</h3>
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-left">
+
+		
+		<lift:InstitutionSnippet.displayForm form="POST" accept-charset="utf-8">
+			<fieldset id="institution" class="">
+				<legend>Institution</legend>
+				<ul>
+					<li>
+						<label for="name">Name</label>  
+						<form:name /> 
+					</li>
+					<li> 
+						<label for="nationality">Nationality</label> 
+						<form:nationality /> 
+					</li>		
+				</ul>
+				
+			</fieldset>
+			<form:submit />
+			<form:delete />
+			
+		</lift:InstitutionSnippet.displayForm>
+		
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-right">
+		<lift:Stats.displayStats>
+			<p> We currently recorded <stats:discoveries /> discoveries made by <stats:sources /> different sources where 
+				<stats:scientists /> are scientists and <stats:labs /> are labs. <br />
+			</p>
+		</lift:Stats.displayStats>
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-bottom">
+		<h3>All recorded institutions</h3>
+		<lift:InstitutionSnippet.displayInstitutions>
+		
+			<institutions:tablesorter />
+			<table border="0" cellspacing="5" cellpadding="5" class="tablesorter">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Nationality</th>
+					</tr>
+				</thead>
+				<tbody>
+					<institutions:institutions>
+						<tr>
+							<td> <a institution:link="" target="_self"> <institution:name /> </a></td>
+							<td> <institution:nationality /> </td>
+						</tr>
+					</institutions:institutions>
+				</tbody>
+			</table>
+		</lift:InstitutionSnippet.displayInstitutions>
+	</lift:bind-at>
+	
+</lift:surround>
+

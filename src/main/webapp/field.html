@@ -1,0 +1,61 @@
+<lift:surround with="default">
+	
+	
+	
+	<lift:bind-at name="content-top">
+		<h3>Add a field</h3>
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-left">
+
+		
+		<lift:FieldSnippet.displayForm form="POST" accept-charset="utf-8">
+			<fieldset id="institution" class="">
+				<legend>Field</legend>
+				<ul>
+					<li> 
+						<label for="name">Name</label> 
+						<form:name /> 
+					</li>
+				</ul>
+				
+			</fieldset>
+			<form:submit />
+			<form:delete />
+			
+		</lift:FieldSnippet.displayForm>
+		
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-right">
+		<lift:Stats.displayStats>
+			<p> We currently recorded <stats:discoveries /> discoveries made by <stats:sources /> different sources where 
+				<stats:scientists /> are scientists and <stats:labs /> are labs. <br />
+			</p>
+		</lift:Stats.displayStats>
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-bottom">
+		<h3>All recorded fields</h3>
+		<lift:FieldSnippet.displayFields>
+		
+			<fields:tablesorter />
+			<table border="0" cellspacing="5" cellpadding="5" class="tablesorter">
+				<thead>
+					<tr>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<fields:fields>
+						<tr>
+							<td> <a field:link="" target="_self"> <field:name /> </a></td>
+						</tr>
+					</fields:fields>
+				</tbody>
+			</table>
+		</lift:FieldSnippet.displayFields>
+	</lift:bind-at>
+	
+</lift:surround>
+

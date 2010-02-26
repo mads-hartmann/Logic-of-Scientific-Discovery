@@ -1,0 +1,60 @@
+<lift:surround with="default">
+	
+	
+	
+	<lift:bind-at name="content-top">
+		<h3>Add a Sources</h3>
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-left">
+		
+		<a href="/person" target="_self">add a person</a>
+		<a href="/lab" target="_self">add a lab</a>
+
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-right">
+		<lift:Stats.displayStats>
+			<p> We currently recorded <stats:discoveries /> discoveries made by <stats:sources /> different sources where 
+				<stats:scientists /> are scientists and <stats:labs /> are labs. <br />
+			</p>
+		</lift:Stats.displayStats>
+	</lift:bind-at>
+	
+	<lift:bind-at name="content-bottom">
+		<h3>All recorded sources</h3>
+		<lift:SourceSnippet.displaySources>
+		
+			<sources:tablesorter />
+			<table border="0" cellspacing="5" cellpadding="5" class="tablesorter">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Birth</th>
+						<th>Death</th>
+						<th>Nationality</th>
+						<th>Type</th>
+						<th>Institution</th>
+						<th>Discoveries</th>
+						<th>Awards</th>
+					</tr>
+				</thead>
+				<tbody>
+					<sources:sources>
+						<tr>
+							<td> <a source:link="" target="_self"><source:name /></a></td>
+							<td> <source:birth /> </td>
+							<td> <source:death /> </td>
+							<td> <source:nationality /> </td>
+							<td> <source:sourceType /> </td>
+							<td> <source:institution /> </td>
+							<td> <source:discoveries /> </td>
+							<td> <source:awards /> </td>
+						</tr>
+					</sources:sources>
+				</tbody>
+			</table>
+		</lift:SourceSnippet.displaySources>
+	</lift:bind-at>
+</lift:surround>
+

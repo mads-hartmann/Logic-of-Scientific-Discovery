@@ -1,0 +1,20 @@
+#Source Dependencies
+#Fri Feb 26 15:51:07 CET 2010
+src/main/scala/sidewayscoding/model/Field.scala=src/main/scala/sidewayscoding/model/Discovery.scala\:src/main/scala/sidewayscoding/snippet/FieldSnippet.scala\:src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala\:src/main/scala/bootstrap/liftweb/Boot.scala\:src/main/scala/sidewayscoding/api/RestAPI.scala
+src/main/scala/sidewayscoding/api/RestAPI.scala=src/main/scala/bootstrap/liftweb/Boot.scala
+src/main/scala/sidewayscoding/snippet/Stats.scala=
+src/main/scala/sidewayscoding/snippet/SourceSnippet.scala=
+src/main/scala/sidewayscoding/snippet/InstitutionSnippet.scala=
+src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala=
+src/main/scala/sidewayscoding/model/Discovery.scala=src/main/scala/sidewayscoding/model/DiscoverySource.scala\:src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala\:src/main/scala/sidewayscoding/snippet/Stats.scala\:src/main/scala/sidewayscoding/model/DiscoveryDependency.scala\:src/main/scala/bootstrap/liftweb/Boot.scala\:src/main/scala/sidewayscoding/api/RestAPI.scala
+src/main/scala/sidewayscoding/model/Award.scala=src/main/scala/sidewayscoding/model/AwardSource.scala\:src/main/scala/bootstrap/liftweb/Boot.scala\:src/main/scala/sidewayscoding/snippet/AwardSnippet.scala\:src/main/scala/sidewayscoding/snippet/SourceSnippet.scala
+src/main/scala/sidewayscoding/model/Institution.scala=src/main/scala/sidewayscoding/model/Source.scala\:src/main/scala/sidewayscoding/snippet/InstitutionSnippet.scala\:src/main/scala/bootstrap/liftweb/Boot.scala\:src/main/scala/sidewayscoding/snippet/SourceSnippet.scala
+src/main/scala/sidewayscoding/model/DiscoveryDependency.scala=src/main/scala/sidewayscoding/model/Discovery.scala\:src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala\:src/main/scala/bootstrap/liftweb/Boot.scala
+src/main/scala/sidewayscoding/model/AwardSource.scala=src/main/scala/sidewayscoding/model/Source.scala\:src/main/scala/bootstrap/liftweb/Boot.scala\:src/main/scala/sidewayscoding/model/Award.scala\:src/main/scala/sidewayscoding/snippet/SourceSnippet.scala
+src/main/scala/sidewayscoding/lib/SafeSave.scala=src/main/scala/sidewayscoding/model/Discovery.scala\:src/main/scala/sidewayscoding/snippet/InstitutionSnippet.scala\:src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala\:src/main/scala/sidewayscoding/model/Institution.scala\:src/main/scala/sidewayscoding/snippet/AwardSnippet.scala\:src/main/scala/sidewayscoding/model/Source.scala\:src/main/scala/sidewayscoding/snippet/FieldSnippet.scala\:src/main/scala/sidewayscoding/model/Field.scala\:src/main/scala/sidewayscoding/model/Award.scala\:src/main/scala/sidewayscoding/snippet/SourceSnippet.scala
+src/main/scala/sidewayscoding/snippet/EntitySnippet.scala=
+src/main/scala/sidewayscoding/snippet/AwardSnippet.scala=
+src/main/scala/bootstrap/liftweb/Boot.scala=
+src/main/scala/sidewayscoding/snippet/FieldSnippet.scala=
+src/main/scala/sidewayscoding/model/Source.scala=src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala\:src/main/scala/sidewayscoding/model/Institution.scala\:src/main/scala/sidewayscoding/snippet/Stats.scala\:src/main/scala/sidewayscoding/model/AwardSource.scala\:src/main/scala/sidewayscoding/model/DiscoverySource.scala\:src/main/scala/bootstrap/liftweb/Boot.scala\:src/main/scala/sidewayscoding/snippet/SourceSnippet.scala
+src/main/scala/sidewayscoding/model/DiscoverySource.scala=src/main/scala/sidewayscoding/model/Source.scala\:src/main/scala/sidewayscoding/model/Discovery.scala\:src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala\:src/main/scala/bootstrap/liftweb/Boot.scala
