@@ -749,6 +749,7 @@ Discovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscodi
 Discovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/Discovery.scala	/^object Discovery extends Discovery with LongKeyedMetaMapper[Discovery] with SafeSave[Discovery] {$/;"	o
 DiscoveryDependency	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoveryDependency.scala	/^class DiscoveryDependency extends LongKeyedMapper[DiscoveryDependency] with IdPK {$/;"	c
 DiscoveryDependency	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoveryDependency.scala	/^object DiscoveryDependency extends DiscoveryDependency with LongKeyedMetaMapper[DiscoveryDependency] {$/;"	o
+DiscoverySnippet	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^class DiscoverySnippet {$/;"	c
 DiscoverySnippet	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^class DiscoverySnippet {$/;"	c
 DiscoverySource	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoverySource.scala	/^class DiscoverySource extends LongKeyedMapper[DiscoverySource] with IdPK {$/;"	c
 DiscoverySource	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoverySource.scala	/^object DiscoverySource extends DiscoverySource with LongKeyedMetaMapper[DiscoverySource] {$/;"	o
@@ -4904,6 +4905,7 @@ anInsertTree	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/collect
 anInt	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/scala/net/liftweb/util/JSONParser.scala	/^  lazy val anInt: Parser[Long] = (digit19 ~ digits ^? {case x ~ xs if xs.length < 12 => (x :: xs).mkString("").toLong}) |$/;"	V
 aname	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/xml/parsing/MarkupParser.scala	/^      val aname = xName$/;"	V
 anchor	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-textile/src/main/scala/net/liftweb/textile/TextileParser.scala	/^    lazy val anchor =$/;"	V
+and	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^		This methods displays a form for creating a Discovery object and storing it $/;"	o
 and	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^		This methods displays a form for creating a Discovery object and storing it $/;"	o
 andDo	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/parsing/ast/Binders.scala	/^      def andDo(block: => Unit): T = {block; r}$/;"	f
 andDo	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/parsing/ast/Binders.scala	/^    def andDo(block: => Unit): T$/;"	f
@@ -5886,6 +5888,7 @@ aultAward	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscodi
 aultCharsetName	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/compat/Platform.scala	/^  def defaultCharsetName: String = {$/;"	f
 aultChecked	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/JSONComet.scala	/^    defaultChecked={JsVar("it", field.name)} \/>$/;"	f
 aultCreateNotFound	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/http/Req.scala	/^  private[liftweb] def defaultCreateNotFound(in: Req) =$/;"	f
+aultDiscovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^	def defaultDiscovery(): Discovery = {$/;"	f
 aultDiscovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^	def defaultDiscovery(): Discovery = {$/;"	f
 aultErrorMessage	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/MappedString.scala	/^  abstract override def validations = valMaxLen(maxLen, defaultErrorMessage) _ :: super.validations$/;"	f
 aultErrorMessage	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/MappedString.scala	/^  def defaultErrorMessage = S.?("Field too long.  Maximum Length")+": "+maxLen$/;"	f
@@ -7106,6 +7109,7 @@ comma	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/scala/net/l
 commaIt	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/scala/net/liftweb/util/StringHelpers.scala	/^        def commaIt(in: List[Char]): List[Char] = in match {$/;"	f
 commafy	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/scala/net/liftweb/util/StringHelpers.scala	/^    def commafy: String = {$/;"	f
 commafy	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/test/scala/net/liftweb/util/StringHelpersSpec.scala	/^  "The SuperString class commafy method" should {$/;"	c
+comment	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoveryDependency.scala	/^	object comment extends MappedText(this)$/;"	o
 comment	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/parsing/combinator/lexical/StdLexical.scala	/^  protected def comment: Parser[Any] = ($/;"	f
 comment	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/parsing/combinatorold/lexical/StdLexical.scala	/^  protected def comment: Parser[Any] = ($/;"	f
 comment	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/xml/factory/Binder.scala	/^  final def comment(pos: Int, txt: String) =$/;"	f
@@ -7968,6 +7972,7 @@ delete	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/collection/im
 delete	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/collection/immutable/Tree.scala	/^  private def delete(key: A): This =$/;"	f
 deleteAny	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/collection/immutable/Tree.scala	/^  protected def deleteAny(key: A): This =$/;"	f
 deleteBtn	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/AwardSnippet.scala	/^		val deleteBtn = $/;"	V
+deleteBtn	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^			val deleteBtn = $/;"	V
 deleteBtn	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^			val deleteBtn = $/;"	V
 deleteBtn	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/FieldSnippet.scala	/^		val deleteBtn = $/;"	V
 deleteBtn	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/InstitutionSnippet.scala	/^		val deleteBtn = $/;"	V
@@ -7978,6 +7983,7 @@ deleteClass	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/m
 deleteConnections	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoveryDependency.scala	/^	def deleteConnections(discovery: Discovery) = {$/;"	f
 deleteCookie	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/http/S.scala	/^  def deleteCookie(cookie: HTTPCookie) {$/;"	f
 deleteCookie	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/http/S.scala	/^  def deleteCookie(name: String) {$/;"	f
+deleteDiscovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^	def deleteDiscovery() = {$/;"	f
 deleteDiscovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^	def deleteDiscovery() = {$/;"	f
 deleteField	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/FieldSnippet.scala	/^	def deleteField() = {$/;"	f
 deleteId	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/CRUDify.scala	/^  def deleteId = "delete_page"$/;"	f
@@ -8030,9 +8036,7 @@ deltaR	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/automata
 deltaSize	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/collection/immutable/HashMap.scala	/^  protected var deltaSize: Int = _$/;"	v
 deltaq	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/automata/WordBerrySethi.scala	/^  protected var deltaq: Array[mutable.HashMap[_labelT,List[Int]]] = _ \/\/ delta$/;"	v
 deltas	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/http/CometActor.scala	/^  private var deltas: List[Delta] = Nil$/;"	v
-depedencyOptions	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^			val depedencyOptions = dependencies.map{ discovery => (discovery.description.is,discovery.description.is)}$/;"	V
 dependencies	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/Discovery.scala	/^	def dependencies = $/;"	f
-dependencies	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^			val dependencies = Discovery.findAll$/;"	V
 dependency	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoveryDependency.scala	/^	object dependency extends MappedLongForeignKey(this, Discovery)  $/;"	o
 dependent	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoveryDependency.scala	/^	object dependent extends MappedLongForeignKey(this, Discovery)  $/;"	o
 deprecated	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/deprecated.scala	/^class deprecated extends StaticAnnotation {}$/;"	c
@@ -8116,9 +8120,11 @@ discovered	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-openid/src/main/s
 discovered	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-openid/src/main/scala/net/liftweb/openid/OpenId.scala	/^    val discovered = manager.associate(discoveries)$/;"	V
 discoveries	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-openid/src/main/scala/net/liftweb/openid/OpenId.scala	/^    val discoveries = manager.discover(userSuppliedString)$/;"	V
 discoveries	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/Source.scala	/^	def discoveries = DiscoverySource.findAll(By(DiscoverySource.source,this.id)).map(_.discovery.obj.open_!)$/;"	f
+discoveries	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^	object discoveries extends RequestVar[List[Discovery]](List[Discovery]())$/;"	o
 discoveries	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^	object discoveries extends RequestVar[List[Discovery]](List[Discovery]())$/;"	o
 discoveriesJSON	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/api/RestAPI.scala	/^	def discoveriesJSON(): Box[LiftResponse] = {$/;"	f
 discovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/DiscoverySource.scala	/^	object discovery extends MappedLongForeignKey(this, Discovery)  $/;"	o
+discovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^	object discovery extends RequestVar[Discovery]( defaultDiscovery() )$/;"	o
 discovery	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^	object discovery extends RequestVar[Discovery]( defaultDiscovery() )$/;"	o
 dispName	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/http/SHtml.scala	/^    val dispName = divName + "_display"$/;"	V
 dispatch	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/builtin/snippet/A.scala	/^  def dispatch : DispatchIt = {$/;"	f
@@ -8169,6 +8175,7 @@ displayFieldAsLineElement	/Users/Mads/Dev/liftweb/framework/lift-persistence/lif
 displayFieldAsLineElement	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/MetaMapper.scala	/^  var displayFieldAsLineElement: NodeSeq => NodeSeq =$/;"	v
 displayFields	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/FieldSnippet.scala	/^	def displayFields(xhtml: NodeSeq): NodeSeq = {$/;"	f
 displayForm	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/AwardSnippet.scala	/^	def displayForm(xhtml: NodeSeq): NodeSeq = {$/;"	f
+displayForm	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^	def displayForm(xhtml: NodeSeq): NodeSeq = {$/;"	f
 displayForm	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^	def displayForm(xhtml: NodeSeq): NodeSeq = {$/;"	f
 displayForm	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/FieldSnippet.scala	/^	def displayForm(xhtml: NodeSeq): NodeSeq = {$/;"	f
 displayForm	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/InstitutionSnippet.scala	/^	def displayForm(xhtml: NodeSeq): NodeSeq = {$/;"	f
@@ -9293,6 +9300,7 @@ fieldMapping	/Users/Mads/Dev/liftweb/framework/lift-base/lift-json/src/main/scal
 fieldMatcher	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/MetaMapper.scala	/^  lazy val fieldMatcher: PartialFunction[(A, String), MappedField[Any, A]] = {$/;"	V
 fieldName	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-record/src/main/scala/net/liftweb/record/Field.scala	/^  private[record] var fieldName: String = _$/;"	v
 fieldNameMode	/Users/Mads/Dev/liftweb/framework/lift-base/lift-json/src/main/scala/net/liftweb/json/JsonParser.scala	/^    private[this] var fieldNameMode = true$/;"	v
+fieldOptions	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^			val fieldOptions :Seq[(Field,String)] = fields.map{ $/;"	V
 fieldOptions	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^			val fieldOptions :Seq[(Field,String)] = fields.map{ $/;"	V
 fieldOrder	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-openid/src/main/scala/net/liftweb/openid/OpenIDProtoUser.scala	/^  override def fieldOrder: List[BaseOwnedMappedField[ModelType]] = nickname ::$/;"	f
 fieldOrder	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/MetaMapper.scala	/^  def fieldOrder: List[BaseOwnedMappedField[A]] = Nil$/;"	f
@@ -9321,6 +9329,7 @@ fields	/Users/Mads/Dev/liftweb/framework/lift-base/lift-json/src/main/scala/net/
 fields	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/MetaMapper.scala	/^          val fields = Map(c.getDeclaredFields.$/;"	V
 fields	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-record/src/main/scala/net/liftweb/record/MetaRecord.scala	/^  def fields(rec: BaseRecord) : List[OwnedField[BaseRecord]] =$/;"	f
 fields	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-record/src/main/scala/net/liftweb/record/Record.scala	/^  def fields() = meta.fields(this)$/;"	f
+fields	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^			val fields = Field.findAll$/;"	V
 fields	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^			val fields = Field.findAll$/;"	V
 fields	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/runtime/ScalaRunTime.scala	/^    def fields(from: Int): List[Any] =$/;"	f
 fieldsForList	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala/net/liftweb/mapper/CRUDify.scala	/^  def fieldsForList: List[MappedField[_, CrudType]] = mappedFieldsForModel$/;"	f
@@ -10982,6 +10991,7 @@ id	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/main/scala
 id	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-mapper/src/test/scala/net/liftweb/mapper/MapperSpecs.scala	/^  object id extends MappedLongIndex(this)$/;"	o
 id	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/Source.scala	/^	object id extends MappedLongIndex(this)$/;"	o
 id	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/AwardSnippet.scala	/^				val id :Int = Integer.parseInt(awardId)$/;"	V
+id	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^				val id :Int = Integer.parseInt(idStr)$/;"	V
 id	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^				val id :Int = Integer.parseInt(idStr)$/;"	V
 id	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/FieldSnippet.scala	/^				val id :Int = Integer.parseInt(fieldId)$/;"	V
 id	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/InstitutionSnippet.scala	/^				val id :Int = Integer.parseInt(institutionId)$/;"	V
@@ -11611,6 +11621,7 @@ isErrorEnabled	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/sc
 isErrorEnabled	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/scala/net/liftweb/util/Log.scala	/^  override def isErrorEnabled = rootLogger.isEnabledFor(LiftLogLevels.Error)$/;"	f
 isErrorEnabled	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/scala/net/liftweb/util/Slf4jLogger.scala	/^  override def isErrorEnabled = logger.isErrorEnabled$/;"	f
 isErrorEnabled	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/test/scala/net/liftweb/util/TimeHelpersSpec.scala	/^    override def isErrorEnabled: Boolean = logger.isErrorEnabled$/;"	f
+isExperiment	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/Discovery.scala	/^	object isExperiment extends MappedBoolean(this)$/;"	o
 isField	/Users/Mads/Dev/liftweb/framework/lift-persistence/lift-record/src/main/scala/net/liftweb/record/MetaRecord.scala	/^  private def isField(m: Method) = classOf[Field[_, _]].isAssignableFrom(m.getReturnType)$/;"	f
 isFinal	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/automata/DetWordAutom.scala	/^  def isFinal(q: Int) = finals(q) != 0$/;"	f
 isFinal	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/automata/NondetWordAutom.scala	/^  final def isFinal(state: Int) = finals(state) > 0$/;"	f
@@ -14692,7 +14703,7 @@ process	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-widgets/src/main/sca
 processAttributes	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/http/LiftSession.scala	/^  private def processAttributes(in: MetaData): MetaData = {$/;"	f
 processAwards	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/SourceSnippet.scala	/^		def processAwards(in: List[String]) = selectedAwards(in.map{ name => Award.findAll(By(Award.name,name)).first})$/;"	f
 processBind	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/scala/net/liftweb/util/BindHelpers.scala	/^  def processBind(around: NodeSeq, atWhat: Map[String, NodeSeq]) : NodeSeq = {$/;"	f
-processDependencies	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^		def processDependencies(in: List[String]) =$/;"	f
+processDependencies	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^		def processDependencies(in: List[String]) =$/;"	f
 processEvent	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-machine/src/main/scala/net/liftweb/machine/ProtoStateMachine.scala	/^  def processEvent(event: Meta#Event): Unit = {$/;"	f
 processEvent	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-machine/src/main/scala/net/liftweb/machine/ProtoStateMachine.scala	/^  protected def processEvent(who: MyType, what: Meta#Event) {$/;"	f
 processIdent	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/parsing/combinator/lexical/StdLexical.scala	/^  protected def processIdent(name: String) = $/;"	f
@@ -14706,6 +14717,7 @@ processRewrite	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/
 processSnippet	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/http/LiftSession.scala	/^  private def processSnippet(page: String, snippetName: Box[String],$/;"	f
 processSources	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^		def processSources(in: List[String]) =  $/;"	f
 processString	/Users/Mads/Dev/liftweb/framework/lift-base/lift-util/src/main/scala/net/liftweb/util/StringHelpers.scala	/^  def processString(msg: String, subst: Map[String, String]): String = {$/;"	f
+processSubmit	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^	def processSubmit() = {$/;"	f
 processSubmit	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^	def processSubmit() = {$/;"	f
 processSubmit	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/SourceSnippet.scala	/^		def processSubmit() = {$/;"	f
 processSurroundAndInclude	/Users/Mads/Dev/liftweb/framework/lift-base/lift-webkit/src/main/scala/net/liftweb/http/LiftSession.scala	/^  def processSurroundAndInclude(page: String, in: NodeSeq): NodeSeq =$/;"	f
@@ -16921,9 +16933,12 @@ source	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/parsing/
 source	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/util/parsing/input/Reader.scala	/^  def source: java.lang.CharSequence = $/;"	f
 source	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/xml/include/sax/XIncludeFilter.scala	/^    var source: URL = null$/;"	v
 sourceColorModel	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-imaging/src/main/scala/net/liftweb/imaging/ImageHelpers.scala	/^    var sourceColorModel = source.getColorModel $/;"	v
+sourceOptions	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^			val sourceOptions = sources.map{ inst => (inst.name.is,inst.name.is) }$/;"	V
 sourceOptions	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^			val sourceOptions = sources.map{ inst => (inst.name.is,inst.name.is) }$/;"	V
 sourceType	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/Source.scala	/^	object sourceType extends MappedEnum(this,SourceTypes) { \/\/ making sure they have reasonable default values $/;"	o
+sources	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/Award.scala	/^	def sources = AwardSource.findAll(By(AwardSource.award,this)).map(_.award.obj.open_!)$/;"	f
 sources	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/model/Discovery.scala	/^	def sources = $/;"	f
+sources	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DependencySnippet.scala	/^			val sources = Scientist.findAll(By(Scientist.sourceType,SourceTypes.Scientist)) ::: Lab.findAll(By(Lab.sourceType, SourceTypes.Lab))$/;"	V
 sources	/Users/Mads/Dev/logicOfScientificDiscovery/src/main/scala/sidewayscoding/snippet/DiscoverySnippet.scala	/^			val sources = Scientist.findAll(By(Scientist.sourceType,SourceTypes.Scientist)) ::: Lab.findAll(By(Lab.sourceType, SourceTypes.Lab))$/;"	V
 space	/Users/Mads/Dev/scala-2.7.7.final-sources/src/library/scala/xml/XML.scala	/^  val space     = "space"$/;"	V
 spaceOrEnd	/Users/Mads/Dev/liftweb/framework/lift-modules/lift-textile/src/main/scala/net/liftweb/textile/TextileParser.scala	/^    lazy val spaceOrEnd: Parser[Int] = endOfLine ^^^ 0 | rep1(' ') ^^ {case lst => lst.length}$/;"	V

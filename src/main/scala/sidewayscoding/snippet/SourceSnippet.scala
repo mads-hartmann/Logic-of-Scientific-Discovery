@@ -91,14 +91,14 @@ class SourceSnippet {
 		val institutions = Institution.findAll
 		val options :Seq[(Institution,String)] = institutions.map{ inst => (inst,inst.name.is) }
 		
-		bind( 	"form", xhtml, 
-				"name" 			-> text(lab.is.name,lab.is.name(_)),
-				"submit" 		-> submit("Save", () => { Lab.trySave(lab.is) },("class","btn") ),
-				"delete" 		-> deleteBtn,
-				"institution" 	-> selectObj[Institution](options, lab.is.institution.obj, lab.is.institution(_))) 
+		bind("form", xhtml, 
+			 "name" 		-> text(lab.is.name,lab.is.name(_)),
+			 "opened" 		-> text(lab.is.birth.toString, (in) => lab.is.birth(Integer.parseInt(in))),
+			 "closed" 		-> text(lab.is.death.toString, (in) => lab.is.death(Integer.parseInt(in))),
+			 "submit" 		-> submit("Save", () => { Lab.trySave(lab.is) },("class","btn") ),
+			 "delete" 		-> deleteBtn,
+			 "institution" 	-> selectObj[Institution](options, lab.is.institution.obj, lab.is.institution(_))) 
 	}
-
-	
 	
 	/*	---------------------------------------------------------------------- 
 		This methods display all of the discoveries in a sortable table 
@@ -124,8 +124,8 @@ class SourceSnippet {
 			bind("source", chooseTemplate("sources","sources",xhtml), 
 				  "name" -> Text(lab.name),
 				  AttrBindParam("link",Text("/lab/" + lab.id),"href"),
-				  "birth" -> Text("-"),
-				  "death" -> Text("-"),
+				  "birth" -> Text(lab.birth.toString),
+				  "death" -> Text(lab.death.toString),
 				  "nationality" -> Text(/*lab.institution.obj.open_!.nationality*/"testing"),
 				  "sourceType" -> Text(lab.sourceType.toString),
   				  "institution" -> Text(/*lab.institution.obj.open_!.name*/"testing"),

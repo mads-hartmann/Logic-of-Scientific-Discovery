@@ -10,6 +10,7 @@ import net.liftweb.common._
 import java.util.Date
 import lib.{SafeSave}
 import xml.{Text}
+import java.util.Date
 
 object SourceTypes extends Enumeration { 
 	val Scientist = Value("Scientist") 
@@ -25,15 +26,17 @@ trait BaseSourceTrait[ T <:BaseSourceTrait[T] ] extends LongKeyedMapper[T] {
 
 	object birth extends MappedInt(this) {
 		def validateBirth(b: Int) = {
-			if ( b > 2009) List(FieldError(this, Text("Invalid year of birth")))
+			val date = new Date
+			if ( b > date.getYear+1900) List(FieldError(this, Text("Invalid year of birth")))
 			else List[FieldError]()
 		}
 		override def validations = validateBirth _ :: Nil
 	}
-	
+
 	object death extends MappedInt(this) {
 		def validateDeath (y: Int) = {
-			if ( y > 2009 || y < birth.is ) List(FieldError(this, Text("Invalid year of death")))
+			val date = new Date
+			if ( y > date.getYear+1900 || y < birth.is ) List(FieldError(this, Text("Invalid year of death")))
 			else List[FieldError]()
 		}
 		override def validations = validateDeath _ :: Nil

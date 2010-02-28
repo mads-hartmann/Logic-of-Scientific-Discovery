@@ -12,6 +12,7 @@ import util._
 import net.liftweb.common._
 import lib.{SafeSave}
 import xml.{Text}
+import java.util.Date
 
 class Discovery extends LongKeyedMapper[Discovery] with IdPK {
 	
@@ -24,7 +25,8 @@ class Discovery extends LongKeyedMapper[Discovery] with IdPK {
 	object year extends MappedInt(this){
 		
 		def validateYear (y: Int) = {
-			if ( year > 2009 || year < 0 ) List(FieldError(this, Text("Year has to be between 0 and 2009")))
+			val date = new Date
+			if (year > date.getYear+1900) List(FieldError(this, Text("Year has to be between 0 and 2009")))
 			else List[FieldError]()
 		}
 		

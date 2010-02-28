@@ -17,8 +17,18 @@ class DiscoveryDependency extends LongKeyedMapper[DiscoveryDependency] with IdPK
 
 }
 object DiscoveryDependency extends DiscoveryDependency with LongKeyedMetaMapper[DiscoveryDependency] {
-	def join (dependent :Discovery, dependency :Discovery) =
-		this.create.dependent(dependent).dependency(dependency).save	
+	def join (dependent :Discovery, dependency :Discovery): Box[DiscoveryDependency] = {
+		
+		if (dependent != dependency && dependent.year.is > dependency.year.is) {
+			val dd = this.create.dependent(dependent).dependency(dependency)
+			dd.save
+			Full(dd)
+		} else {
+			Empty
+		}
+	}
+		
+		
 		
 	def deleteConnections(discovery: Discovery) = {
 		(DiscoveryDependency.findAll(By(DiscoveryDependency.dependent,discovery)) :::

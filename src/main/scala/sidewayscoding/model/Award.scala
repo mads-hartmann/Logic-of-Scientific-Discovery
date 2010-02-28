@@ -8,6 +8,7 @@ import util._
 import net.liftweb.common._
 import xml.{Text, NodeSeq}
 import lib.{SafeSave}
+import java.util.Date
 
 class Award extends LongKeyedMapper[Award] with IdPK {
   
@@ -19,7 +20,8 @@ class Award extends LongKeyedMapper[Award] with IdPK {
 	object year extends MappedInt(this) {
 		
 		def validateYear (y: Int) = {
-			if ( year > 2009 || year < 0 ) List(FieldError(this, Text("Year has to be between 0 and 2009")))
+			val date = new Date
+			if ( year > date.getYear+1900) List(FieldError(this, Text("Year has to be before the current year")))
 			else List[FieldError]()
 		}
 		

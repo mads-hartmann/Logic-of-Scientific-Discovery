@@ -39,6 +39,7 @@ class Boot {
 							Menu(Loc("Lab", List("lab"), "Lab")),
 				  			Menu(Loc("Add Institution", List("institution"), "Institution")),
 				  			Menu(Loc("Add Discovery", List("discovery"), "Discovery")),
+							Menu(Loc("Add Dependency", List("dependency"), "Dependency")),
 							Menu(Loc("Add Field", List("field"), "Field")),
 							Menu(Loc("Add Award", List("award"), "Award")),
 							Menu(Loc("Timeline", List("timeline"), "Timeline"))

@@ -43,18 +43,9 @@ class DiscoverySnippet {
 	def processSubmit() = {
 		
 		if (Discovery.trySave(discovery)) {
-			//clean
-			DiscoverySource.findAll(By(DiscoverySource.discovery, discovery.is)).foreach{ _.delete_!}
-			DiscoveryDependency.deleteConnections(discovery)
-			// connection
-			discoveries.is.foreach{ dependency: Discovery => DiscoveryDependency.join(discovery,dependency)}
-			source.is.foreach{ sour: BaseSource =>
-				sour match { //@TODO This should probably be moved into the discoverySource class - more neat that way uknow
-					case s: Scientist => DiscoverySource.join(s, discovery)
-					case l: Lab => DiscoverySource.join(l, discovery)
-				}	
-			}
+			
 		}
+		
 	} 		
 	
 	
@@ -71,16 +62,10 @@ class DiscoverySnippet {
 		
 		def processSources(in: List[String]) =  
 			source(in.map{ name => Scientist.findAll(By(Scientist.name,name)).first})
-
-		def processDependencies(in: List[String]) =
-			discoveries(in.map{ description => Discovery.findAll(By(Discovery.description,description)).first})
-				
+		
 		if (Field.count > 0) { //@TODO Clean this up?
 			val sources = Scientist.findAll(By(Scientist.sourceType,SourceTypes.Scientist)) ::: Lab.findAll(By(Lab.sourceType, SourceTypes.Lab))
 			val sourceOptions = sources.map{ inst => (inst.name.is,inst.name.is) }
-
-			val dependencies = Discovery.findAll
-			val depedencyOptions = dependencies.map{ discovery => (discovery.description.is,discovery.description.is)}
 
 			val fields = Field.findAll
 			val fieldOptions :Seq[(Field,String)] = fields.map{ 
@@ -93,9 +78,9 @@ class DiscoverySnippet {
 				 "description" 	-> textarea(discovery.description.is, discovery.is.description(_)),
 				 "year" 		-> text(discovery.is.year.is.toString, (in: String) => discovery.is.year(Integer.parseInt(in))),
 	 			 "source" 		-> multiSelect(sourceOptions, source.map{ _.toString }, processSources(_)),
-	 			 "dependencies" -> multiSelect(depedencyOptions, dependencies.map{ _.description }, processDependencies(_)),
 				 "reference" 	-> text(discovery.is.reference.is,discovery.is.reference(_)),
 				 "field" 		-> selectObj[Field](fieldOptions,Full(fieldOptions.first._1),discovery.is.field(_)),
+				 "isExp"			-> checkbox(discovery.is.isExperiment, (b) => {discovery.is.isExperiment(b)}),
 				 "submit" 		-> submit("Gem", processSubmit,("class","btn")),
 				 "delete" 		-> deleteBtn
 				)

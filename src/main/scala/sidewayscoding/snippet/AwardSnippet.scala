@@ -18,6 +18,7 @@ class AwardSnippet {
 	
 	
 	object award extends RequestVar( defaultAward() )
+	object selectedScientist extends RequestVar(List[Scientist]())
 	
 	def defaultAward() = {
 		S.param("id") match { 
@@ -43,7 +44,17 @@ class AwardSnippet {
 		bind("form", xhtml, 
 			 "name" -> text(award.is.name,award.is.name(_)),
 			 "year" -> text(award.is.year.toString,(year: String) => award.is.year(Integer.parseInt(year))),
-			 "submit" -> submit("Save", () => { Award.trySave(award.is) },("class","btn")),
+			 "scientists" -> {
+				val options = Scientist.findAll.map{ sci => (sci.name.is,sci.name.is)}
+				multiSelect(options, selectedScientist.map{_.name.is}, (in) => {
+					selectedScientist(in.map{ name => Scientist.find(By(Scientist.name, name)).open_!})	
+				}) 
+			 },
+			 "submit" -> submit("Save", () => { 
+				if (Award.trySave(award.is)) {
+					selectedScientist.foreach{ sci => AwardSource.join(sci,award) }
+				}
+			},("class","btn")),
 			 "delete" -> deleteBtn )
 	}
 	
