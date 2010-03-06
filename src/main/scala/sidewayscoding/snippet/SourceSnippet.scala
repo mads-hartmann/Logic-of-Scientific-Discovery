@@ -3,6 +3,7 @@ package sidewayscoding.snippet
 import xml.{Text, NodeSeq}
 import net.liftweb.util.Helpers._
 import net.liftweb.mapper._
+import net.liftweb.http.{FileParamHolder}
 import net.liftweb.http.S._
 import net.liftweb.http.SHtml._
 import net.liftweb.common._
@@ -17,12 +18,9 @@ import _root_.net.liftweb.widgets.tablesorter._
 
 class SourceSnippet {
 
-  	/*	---------------------------------------------------------------------- 
-		Displays a form for editing and creating scientist entities
-		---------------------------------------------------------------------- */
 	def displayScientistForm(xhtml: NodeSeq): NodeSeq = {
-		
 		object scientist extends RequestVar[Scientist]( defaultScientist() )
+		
 		object selectedAwards extends RequestVar[List[Award]](List[Award]())
 		
 		def defaultScientist(): Scientist = {
@@ -37,7 +35,7 @@ class SourceSnippet {
 				case _ => Scientist.create
 			}
 		}
-		
+			
 		def processSubmit() = {
 			if (Scientist.trySave(scientist.is)) {
 				AwardSource.findAll(By(AwardSource.source,scientist.is.id)).foreach{ _.delete_! }
@@ -54,20 +52,37 @@ class SourceSnippet {
 			if(Scientist.saved_?(scientist.is)) submit("Delete", () => Scientist.delete_!(scientist),("class","btn")) 
 			else submit("Delete", () => Scientist.delete_!(scientist),("class","btn"), ("disabled","disabled"))
 		
+		def saveFile(fp: FileParamHolder): Unit = {
+	    fp.file match {
+	      case null => S.error("No file selected")
+	      case x if x.length == 0 => S.error("Empty file uploaded")
+	      case x =>
+	        val blob = ImageBlob.create.image(x)
+					val img = ImageInfo.create.imgName(fp.fileName).mimeType(fp.mimeType)
+					scientist.imageName(fp.fileName)
+					img.validate match {
+					  case Nil =>
+					    blob.saveMe
+					    img.imgBlob(blob)
+					    img.saveMe
+					    S.notice("Thanks for the upload")
+					  case err =>
+					    S.error(err)
+					}
+	    }
+	  }
+		
 		bind( 	"form", xhtml, 
-				"name" 			-> text(scientist.is.name,scientist.is.name(_)),
-				"birth" 		-> text(scientist.is.birth.is.toString, (in: String) => scientist.is.birth(Integer.parseInt(in))),
-				"death" 		-> text(scientist.is.death.is.toString, (in: String) => scientist.is.death(Integer.parseInt(in))),
-				"nationality" 	-> text(scientist.is.nationality, scientist.is.nationality(_)),
-				"submit" 		-> submit("Save", processSubmit,("class","btn") ),
-				"delete" 		-> deleteBtn,
-				"awards" 		-> multiSelect(awardOptions, selectedAwards.map{ _.toString }, processAwards(_)) 
-			)
-	}
+						"name" 			-> text(scientist.is.name,scientist.is.name(_)),
+						"birth" 		-> text(scientist.is.birth.is.toString, (in: String) => scientist.is.birth(Integer.parseInt(in))),
+						"death" 		-> text(scientist.is.death.is.toString, (in: String) => scientist.is.death(Integer.parseInt(in))),
+						"nationality" 	-> text(scientist.is.nationality, scientist.is.nationality(_)),
+						"delete" 		-> deleteBtn,
+						"imageUpload"			-> fileUpload(saveFile _),
+						"submit" 		-> submit("Save", processSubmit,("class","btn") ),
+						"awards" 		-> multiSelect(awardOptions, selectedAwards.map{ _.toString }, processAwards(_)))
+			}
 	
-	/*	---------------------------------------------------------------------- 
-		Displays a form for editing and creating lab entities
-		---------------------------------------------------------------------- */
 	def displayLabForm(xhtml: NodeSeq): NodeSeq = {
 		object lab extends RequestVar[Lab]( defaultLab() )
 				
@@ -100,10 +115,6 @@ class SourceSnippet {
 			 "institution" 	-> selectObj[Institution](options, lab.is.institution.obj, lab.is.institution(_))) 
 	}
 	
-	/*	---------------------------------------------------------------------- 
-		This methods display all of the discoveries in a sortable table 
-		using the tablesorter widget
-		---------------------------------------------------------------------- */
 	def displaySources(xhtml: NodeSeq): NodeSeq = {
 		
 		def bindScientist(scientist: Scientist) = {
@@ -143,4 +154,5 @@ class SourceSnippet {
 				}
 			})	
 	}
+
 }

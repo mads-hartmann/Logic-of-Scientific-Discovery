@@ -79,6 +79,8 @@ class Scientist extends BaseSource with BaseSourceTrait[Scientist] {
 		override def validations = valMinLen(1, "name has to contain atleast 1 char") _ :: Nil
 	}
 	
+	object imageName extends MappedString(this,256)
+	
 	def awards =  AwardSource.findAll(By(AwardSource.source,this.id)).map(_.award.obj.open_!)
 
 } 

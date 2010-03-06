@@ -1,17 +1,17 @@
 package bootstrap.liftweb
 
-import _root_.net.liftweb.util._
-import _root_.net.liftweb.http._
-import _root_.net.liftweb.sitemap._
-import _root_.net.liftweb.sitemap.Loc._
+import net.liftweb.util._
+import net.liftweb.http._
+import net.liftweb.sitemap._
+import net.liftweb.sitemap.Loc._
 import Helpers._
-import _root_.net.liftweb.mapper.{DB, ConnectionManager, Schemifier, DefaultConnectionIdentifier, ConnectionIdentifier}
-import _root_.java.sql.{Connection, DriverManager}
-import _root_.sidewayscoding.model._
+import net.liftweb.mapper.{DB, ConnectionManager, Schemifier, DefaultConnectionIdentifier, ConnectionIdentifier}
+import java.sql.{Connection, DriverManager}
+import sidewayscoding.model._
 import javax.servlet.http.{HttpServletRequest}
 import net.liftweb.common._
 import provider.HTTPRequest
-import _root_.net.liftweb.widgets.tablesorter._
+import net.liftweb.widgets.tablesorter._
 import xml.NodeSeq
 
 import sidewayscoding.api.{RestAPI}
@@ -30,7 +30,7 @@ class Boot {
     LiftRules.addToPackages("sidewayscoding")
 
     // go go OR mapping
-    Schemifier.schemify(true, Log.infoF _, Award, Discovery, Field, Institution, Lab, Scientist, DiscoverySource, AwardSource, DiscoveryDependency)
+    Schemifier.schemify(true, Log.infoF _, Award, Discovery, Field, Institution, Lab, Scientist, DiscoverySource, AwardSource, DiscoveryDependency, ImageBlob, ImageInfo)
 
     // Build SiteMap
     val entries = 	List(	Menu(Loc("Home", List("index"), "Home")),
@@ -70,6 +70,7 @@ class Boot {
     }
 	
 	LiftRules.dispatch.prepend(RestAPI.dispatch)
+	LiftRules.statelessDispatchTable.append(ImageInfo.serveImage)
 	
     /*
     * Show the spinny image when an Ajax call starts

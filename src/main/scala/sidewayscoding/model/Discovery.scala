@@ -29,7 +29,7 @@ class Discovery extends LongKeyedMapper[Discovery] with IdPK {
 			if (year > date.getYear+1900) List(FieldError(this, Text("Year has to be between 0 and 2009")))
 			else List[FieldError]()
 		}
-		
+				
 		override def validations = validateYear _ :: Nil
 	}
 	object reference extends MappedPoliteString(this, 128)

@@ -9,7 +9,7 @@
 			<script src="../javascript/addSource.js" type="text/javascript" />
 		</head>
 		
-		<lift:SourceSnippet.displayScientistForm form="POST" accept-charset="utf-8">
+		<lift:SourceSnippet.displayScientistForm form="POST" accept-charset="utf-8" multipart="true">
 			<fieldset id="scientist" class="">
 				<legend>Person</legend>
 				<ul>
@@ -24,6 +24,10 @@
 					<li class="scientist">
 						<label for="death">Death</label>
 						<form:death />
+					</li>
+					<li>
+						<label for="Image">Image</label>
+						<form:imageUpload />
 					</li>
 					<li class="scientist">
 						<label for="nationality">Nationality</label>

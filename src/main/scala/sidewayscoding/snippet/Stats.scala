@@ -27,7 +27,6 @@ class Stats {
 			 "sources" -> (scientistCount+labCount).toString,
 			 "scientists" -> scientistCount,
 			 "labs" -> labCount)
-		
-	}
+	 }
 	
 }

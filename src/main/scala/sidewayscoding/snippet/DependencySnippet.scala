@@ -20,6 +20,7 @@ class DependencySnippet {
 	
 	object discovery extends RequestVar[Discovery]( defaultDiscovery() )
 	object dependencies extends RequestVar[List[Discovery]](List[Discovery]())
+	object comment extends RequestVar("")
 	
 	def defaultDiscovery(): Discovery = {
 		S.param("id") match { 
@@ -46,7 +47,13 @@ class DependencySnippet {
 			DiscoveryDependency.deleteConnections(discovery)
 
 			// connection
-			dependencies.is.foreach{ dependency: Discovery => DiscoveryDependency.join(discovery,dependency)}
+			dependencies.is.foreach{ dependency: Discovery => DiscoveryDependency.join(discovery,dependency) match {
+				case Full(dd) => dd.comment(comment.is).save
+				case _ => {
+					S.error("Something went wrong")
+					redirectTo("/")
+				}
+			}}
 
 		}
 		
@@ -79,6 +86,7 @@ class DependencySnippet {
 				val options = Discovery.findAll.map{ discovery => (discovery.description.is,discovery.description.is)}
 				multiSelect(options,dependencies.is.map{ _.description },processDependencies(_))
 			},
+			"comment" -> textarea(comment,comment(_)),
 			 "submit" 		-> submit("Gem", processSubmit,("class","btn")),
 			 "delete" 		-> deleteBtn
 			)
