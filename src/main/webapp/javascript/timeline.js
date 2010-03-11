@@ -87,15 +87,6 @@ function DiscoveryView(_discovery, discoveryController ,canvasController) {
 		return $('#paper').width() / canvasController.canvas().yearsPrScreen();
 	}
 
-	function inactiveState(){
-		return {"fill":"#4CBF2F", stroke: '#fff', "stroke-width" : calculateWidth()/10, "opacity" : 0.5 , 'scale':1};
-	}
-
-	function activeState(){
-		return {"fill":"#fff", stroke: '#4CBF2F', "stroke-width" : calculateWidth()/10, "opacity" : 1, 'scale':3};
-	}
-
-
 	var obj = {},
 		modelDiscovery = _discovery,
 		raphaelGraphics = null,
@@ -108,7 +99,7 @@ function DiscoveryView(_discovery, discoveryController ,canvasController) {
 			calculateXoffset(modelDiscovery.year),
 			Math.random()*500,
 			calculateWidth(),
-			calculateWidth()).attr(inactiveState());
+			calculateWidth()).attr({"fill":"#4CBF2F", stroke: '#fff', "stroke-width" : calculateWidth()/10, "opacity" : 0.5 , 'scale':1});
 	}();
 
 	function createPathStringTo( dependency ){
@@ -161,14 +152,10 @@ function DiscoveryView(_discovery, discoveryController ,canvasController) {
 	};
 
 	function onMouseClick(event) {
-		if (clicked) {
-			raphaelGraphics.animate(inactiveState(), 300);
-			clicked = false;
-		} else {
-			discoveryController.setSelectedDiscovery(_discovery);
-			raphaelGraphics.animate(activeState(), 300);
-			clicked = true;
-		}
+		$.get("/json/markup/discovery/"+modelDiscovery.id, function(data){
+			eval(data);
+			$.facebox(createMarkup());
+		});
 		event.stopPropagation();
 	};
 
@@ -287,7 +274,6 @@ function DiscoveryController( canvasController, ui ) {
 				console.log("calling draw lines"); // @DEBUGGING
 				n.drawLines();
 			});
-			ui.addTechnologies(technologies);
 		});
 		// $.get('http://86.58.184.137:9999/json/scientists', function(data){
 		$.get('http://localhost:8080/json/scientists', function(data) {
@@ -301,25 +287,18 @@ function DiscoveryController( canvasController, ui ) {
 }
 
 var UI = {};
-UI.addTechnologies = function(_techonologies) {
-	
-	uki({ 
-		view: 'List',
-		rect: '0 0 180 300',
-		anchors: 'top left',
-		rowHeight: '35',
-		data: $.map(_techonologies, function(n){ return n.description; })
-	}).attachTo(document.getElementById('technologies', '0 0'));
-};
 UI.addImages = function(images){
-	var row = 0, column = 0, maxColumns = 3, rowHeight = 55, columnWidth = 55, margin = 5,
+	var data = [],
+		row = 0, column = 0, maxColumns = 3, rowHeight = 55, columnWidth = 55, margin = 5,
 	 	imgar = $.map(images,function(n){
 			if (n.imageUrl !== "") {
 				var view = function(){
+					data[n.imageUrl] = n;
 					return {
 						view: 'Image', 
 						rect: columnWidth*column+(column*margin)+' '+ ((rowHeight*row/1)+(row*margin/1)/1) +' '+rowHeight+' '+columnWidth, 
 						anchors: 'left top',  
+						style: { border: '3px solid black'},
 						src: n.imageUrl,
 						id: n.name.replace(" ","_")
 					};
@@ -334,6 +313,26 @@ UI.addImages = function(images){
 		anchors: 'top left right',
 		childViews: imgar}
 	).attachTo(document.getElementById('images'), '0 0');
+	
+	// events 
+	$('#images img').hover(
+		function(){
+			var img = $(this);
+			img.animate({'opacity':0.5,'border-color':'green'},300);
+			console.log("over " + data[img.attr('src')].name); // @DEBUGGING
+		},
+		function(){
+			var img = $(this);
+			img.animate({'opacity':1,'border-color':'black'},300);
+			console.log("over " + data[img.attr('src')].name); // @DEBUGGING
+		}
+	).bind('click',function(){
+		var img = $(this);
+		$.get('/json/markup/scientist/'+data[img.attr('src')].name, function(data){
+			eval(data);
+			$.facebox(createMarkup());
+		});
+	});
 };
 
 function setUpGUI(mainController) {
@@ -403,49 +402,32 @@ function setUpGUI(mainController) {
 				[ 
 					{ // image box
 						view: 'Box', 
-						rect: '10 600 190 200',
+						rect: '10 44 190 200',
 						anchors: 'top left right',
 						id: 'images'
-					},
-					{ 
-						view: 'Box',
-						rect: '10 100 190 200',
-						anchors: 'top left right',
-						id: 'technologies'
-					},
-					{ 	view: 'Label', 
-						rect: '10 10 190 24', 
+					}, // search box
+					{ 	view: 'TextField', 
+						rect: '8 10 183 24', 
+						placeholder: 'Search sources',
 						multiline: true,
 						textSelectable: true,
 						anchors: 'top left right', 
 						text: 'Clear text field',
-						id: 'selectedDiscoveryLabel'
+						id: 'searchSources'
 					},
 					{	view: 'Button', 
-						rect: '10 560 40 35', 
+						rect: '10 560 80 35', 
 						anchors: 'left bottom', 
-						text: 'In',
+						text: 'Zoom in',
 						id: 'zoomin_btn'						
 					},
 					{	view: 'Button', 
-						rect: '60 560 40 35', 
+						rect: '100 560 80 35', 
 						anchors: 'left bottom', 
-						text: 'Out',
+						text: 'Zoom out',
 						id: 'zoomout_btn'						
-					},
-					{	view: 'Button', 
-						rect: '110 560 40 35', 
-						anchors: 'left bottom', 
-						text: 'Full',
-						id: 'zoomfull_btn'						
 					}
 				]};
-
-		mainController.discoveryController().addDiscoverySelectEventObserver(obj);
-
-		obj.selectionChanged = function(observable){
-			uki('#selectedDiscoveryLabel').text(observable.selectedDiscovery().description);
-		};
 
 		obj.view = function(){ return view; };
 		
@@ -455,7 +437,6 @@ function setUpGUI(mainController) {
 	// events 
 	uki('#zoomout_btn').bind('click',function(){ mainController.zoomOutEvent(); });
 	uki('#zoomin_btn').bind('click',function(){ mainController.zoomInEvent(); });
-	uki('#zoomfull_btn').bind('click',function(){ mainController.zoomFullEvent(); });
 	uki('Slider').bind('change', function() {
 		function getYearFromString(str) {
 			return str.split('.')[0] /1;
@@ -497,13 +478,6 @@ var start = function(mainController){
 
 	obj.zoomInEvent = function() {
 		canvasController.canvas().setYearsPrScreen( canvasController.canvas().yearsPrScreen() - 10);
-	};
-
-	obj.zoomFullEvent = function() {
-		canvasController.canvas()
-			.setminYear(0)
-			.setmaxYear(2009)
-			.setYearsPrScreen( 2009 );
 	};
 
 	return obj;	
