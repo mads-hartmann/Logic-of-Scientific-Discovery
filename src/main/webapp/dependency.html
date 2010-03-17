@@ -39,10 +39,37 @@
 	
 	<lift:bind-at name="content-right">
 		<lift:Stats.displayStats>
-			<p> We currently recorded <stats:discoveries /> discoveries made by <stats:sources /> different sources where 
-				<stats:scientists /> are scientists and <stats:labs /> are labs. <br />
+			<p> We currently recorded <stats:discoveries /> discoveries made by <stats:sources /> different sources<br />
 			</p>
 		</lift:Stats.displayStats>
+	</lift:bind-at>
+
+	<lift:bind-at name="content-bottom">
+		<h3>All recorded sources</h3>
+		<lift:DependencySnippet.displayDependencies>
+		
+			<dependencies:tablesorter />
+			<table border="0" cellspacing="5" cellpadding="5" class="tablesorter">
+				<thead>
+					<tr>
+						<th>Comment</th>
+						<th>Dependent</th>
+						<th>Dependency</th>
+						<td>edit</td>
+					</tr>
+				</thead>
+				<tbody>
+					<dependencies:dependencies>
+						<tr>
+							<td> <dependency:dependency /> </td>
+							<td> <dependency:dependent /> </td>
+							<td> <dependency:comment /> </td>
+							<td> <a dependency:editLink="" >edit</a> </td>
+						</tr>
+					</dependencies:dependencies>
+				</tbody>
+			</table>
+		</lift:DependencySnippet.displayDependencies>
 	</lift:bind-at>
 
 	

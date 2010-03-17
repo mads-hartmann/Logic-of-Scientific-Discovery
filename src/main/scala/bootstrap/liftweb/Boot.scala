@@ -30,20 +30,16 @@ class Boot {
     LiftRules.addToPackages("sidewayscoding")
 
     // go go OR mapping
-    Schemifier.schemify(true, Log.infoF _, Award, Discovery, Field, Institution, Lab, Scientist, DiscoverySource, AwardSource, DiscoveryDependency, ImageBlob, ImageInfo)
+    Schemifier.schemify(true, Log.infoF _, Award, Discovery, Field, Scientist, DiscoverySource, AwardSource, DiscoveryDependency, ImageBlob, ImageInfo)
 
     // Build SiteMap
-    val entries = 	List(	Menu(Loc("Home", List("index"), "Home")),
-                  			Menu(Loc("Add Source", List("source"), "Sources")),
-							Menu(Loc("Person", List("person"), "Person")),
-							Menu(Loc("Lab", List("lab"), "Lab")),
-				  			Menu(Loc("Add Institution", List("institution"), "Institution")),
-				  			Menu(Loc("Add Discovery", List("discovery"), "Discovery")),
-							Menu(Loc("Add Dependency", List("dependency"), "Dependency")),
-							Menu(Loc("Add Field", List("field"), "Field")),
-							Menu(Loc("Add Award", List("award"), "Award")),
-							Menu(Loc("Timeline", List("timeline"), "Timeline"))
-						)
+    val entries = List(	Menu(Loc("Home", List("index"), "Home")),
+												Menu(Loc("Person", List("person"), "Person")),
+								  			Menu(Loc("Discovery", List("discovery"), "Discovery")),
+												Menu(Loc("Dependency", List("dependency"), "Dependency")),
+												Menu(Loc("Field", List("field"), "Field")),
+												Menu(Loc("Award", List("award"), "Award")),
+												Menu(Loc("Timeline", List("timeline"), "Timeline")))
 					
     LiftRules.setSiteMap(SiteMap(entries:_*))
     
@@ -53,12 +49,6 @@ class Boot {
            ParsePath(List("person",id),_,_,_),_,_) =>
            RewriteResponse("person" :: Nil, Map("id" -> id))
       case RewriteRequest( 
-           ParsePath(List("lab",id),_,_,_),_,_) =>
-           RewriteResponse("lab" :: Nil, Map("id" -> id))
-      case RewriteRequest( 
-           ParsePath(List("institution",id),_,_,_),_,_) =>
-           RewriteResponse("institution" :: Nil, Map("id" -> id))
-      case RewriteRequest( 
            ParsePath(List("discovery",id),_,_,_),_,_) =>
            RewriteResponse("discovery" :: Nil, Map("id" -> id))
       case RewriteRequest( 
@@ -67,6 +57,9 @@ class Boot {
       case RewriteRequest( 
            ParsePath(List("award",id),_,_,_),_,_) =>
            RewriteResponse("award" :: Nil, Map("id" -> id))
+      case RewriteRequest( 
+           ParsePath(List("dependency",id),_,_,_),_,_) =>
+           RewriteResponse("dependency" :: Nil, Map("id" -> id))
     }
 	
 	LiftRules.dispatch.prepend(RestAPI.dispatch)
@@ -104,7 +97,7 @@ object DBVendor extends ConnectionManager {
    try {
      Class.forName("com.mysql.jdbc.Driver")
     // val dm = DriverManager.getConnection("jdbc:mysql://localhost:3306/logicOfScientificDiscovery?user=root&password=hummer19&characterEncoding=UTF-8") 
-	val dm = DriverManager.getConnection("jdbc:mysql://localhost:8889/logicOfScientificDiscovery?user=root&password=root&characterEncoding=UTF-8")
+		val dm = DriverManager.getConnection("jdbc:mysql://localhost:8889/logicOfScientificDiscovery?user=root&password=root&characterEncoding=UTF-8")
      Full(dm)
    } catch {
      case e : Exception => e.printStackTrace; Empty

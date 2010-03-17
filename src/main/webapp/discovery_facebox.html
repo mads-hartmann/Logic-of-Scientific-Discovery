@@ -1,21 +1,21 @@
 <div>
 	<h1><discovery:description /></h1>
 	<h2>This discovery was made by <discovery:sources /> back in <discovery:year /> in the field of <discovery:field /> </h2>
-	<p>This discovery is dependent of the following discoveries</p>
-	<table>
-		<tr>
-			<th>Description</th>
-			<th>Year</th>
-			<th>Experiment</th>
-			<th>Field</th>
-		</tr>
-		<tr>
-		<discovery:dependencies>
-			<td> <dependency:description /> </td>
-			<td> <dependency:year /> </td>
-			<td> <dependency:experiment /> </td>
-			<td> <dependency:field /> </td>
-		</discovery:dependencies>	
-		</tr>
-	</table>
+	<discovery:dependencies>
+		<p>This discovery is dependent of the following discoveries</p>
+		<table>
+			<tr>
+				<th>Description</th>
+				<th>Year</th>
+				<th>Experiment</th>
+				<th>Field</th>
+			</tr>
+			<tr>
+				<td> <dependency:description /> </td>
+				<td> <dependency:year /> </td>
+				<td> <dependency:experiment /> </td>
+				<td> <dependency:field /> </td>
+			</tr>
+		</table>
+	</discovery:dependencies>	
 </div>

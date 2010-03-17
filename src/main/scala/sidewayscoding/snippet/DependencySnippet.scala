@@ -18,22 +18,20 @@ import _root_.net.liftweb.widgets.tablesorter._
 class DependencySnippet {
 
 	
-	object discovery extends RequestVar[Discovery]( defaultDiscovery() )
-	object dependencies extends RequestVar[List[Discovery]](List[Discovery]())
-	object comment extends RequestVar("")
+	object discoveryDependency extends RequestVar[DiscoveryDependency]( defaultDiscoveryDependency() )
 	
-	def defaultDiscovery(): Discovery = {
+	def defaultDiscoveryDependency(): DiscoveryDependency = {
 		S.param("id") match { 
 			case Full(idStr) => {
 				val id :Int = Integer.parseInt(idStr)
-				Discovery.find(id) match {
-					case Full(discovery) => discovery
-					case Empty => redirectTo("/discovery")
-					case Failure(msg,_,_) => redirectTo("/discovery")
+				DiscoveryDependency.find(id) match {
+					case Full(discoverydependency) => discoverydependency
+					case Empty => redirectTo("/dependency")
+					case Failure(msg,_,_) => redirectTo("/dependency")
 				}
 			}
-			case Empty => Discovery.create
-			case Failure(msg, _, _) => Discovery.create
+			case Empty => DiscoveryDependency.create
+			case Failure(msg, _, _) => DiscoveryDependency.create
 		}
 	}
 
@@ -42,27 +40,17 @@ class DependencySnippet {
 	// TODO add validation (to the Discobery object) and account for it here
 	def processSubmit() = {
 		
-		if (Discovery.trySave(discovery)) {
-
-			DiscoveryDependency.deleteConnections(discovery)
-
-			// connection
-			dependencies.is.foreach{ dependency: Discovery => DiscoveryDependency.join(discovery,dependency) match {
-				case Full(dd) => dd.comment(comment.is).save
-				case _ => {
-					S.error("Something went wrong")
-					redirectTo("/")
-				}
-			}}
-
+		if (DiscoveryDependency.trySave(discoveryDependency)) {
+			S.notice("Yay, you just added a dependency")
+		} else {
+			S.error("Didn't save it, dunno why")
 		}
-		
 	} 		
 	
-	
-	def deleteDiscovery() = {
-		Discovery.delete_!(discovery)
-		redirectTo("/discovery")
+	def deleteDiscoveryDependency() = {
+		DiscoveryDependency.delete_!(discoveryDependency)
+		S.notice("Bummer, you just deleted a dependency")
+		redirectTo("/dependency")
 	}
 	
 	/*
@@ -71,25 +59,51 @@ class DependencySnippet {
 	*/
 	def displayForm(xhtml: NodeSeq): NodeSeq = {
 		
-		def processDependencies(in: List[String]) = 
-			dependencies(in.map{ description => Discovery.find(By(Discovery.description,description)).open_!})
-
 		val deleteBtn = 
-			if(discovery.is.saved_?) submit("Delete", deleteDiscovery,("class","btn")) 
-			else submit("Delete", deleteDiscovery,("class","btn"), ("disabled","disabled"))
+			if(discoveryDependency.is.saved_?) submit("Delete", deleteDiscoveryDependency,("class","btn")) 
+			else submit("Delete", deleteDiscoveryDependency,("class","btn"), ("disabled","disabled"))
+		val options = Discovery.findAll.map{ discovery => (discovery,discovery.description.is)}
 		bind("form", xhtml, 
 			 "dependent" 	-> {
-				val options = Discovery.findAll.map{ discovery => (discovery,discovery.description.is)}
-				selectObj[Discovery](options,Full(options.first._1),discovery(_))
+				selectObj[Discovery](options,Full(discoveryDependency.dependent.obj match {
+					case Full(dependent) => dependent
+					case _ => options.first._1
+				}),discoveryDependency.is.dependent(_))
 			},
 			 "dependency" -> {
-				val options = Discovery.findAll.map{ discovery => (discovery.description.is,discovery.description.is)}
-				multiSelect(options,dependencies.is.map{ _.description },processDependencies(_))
+				selectObj[Discovery](options,Full(discoveryDependency.dependency.obj match {
+					case Full(dependency) => dependency
+					case _ => options.first._1
+				}),discoveryDependency.is.dependency(_))
 			},
-			"comment" -> textarea(comment,comment(_)),
+			"comment" -> textarea(discoveryDependency.is.comment.is,discoveryDependency.is.comment(_)),
 			 "submit" 		-> submit("Gem", processSubmit,("class","btn")),
 			 "delete" 		-> deleteBtn
 			)
 
 	 }	
+	
+	def displayDependencies(xhtml: NodeSeq): NodeSeq = {
+
+		bind("dependencies", xhtml,
+		 	 "tablesorter" -> TableSorter("table"),
+			 "dependencies" -> DiscoveryDependency.findAll.flatMap{ discoveryDependency => 
+					bind("dependency", chooseTemplate("dependencies","dependencies",xhtml), 
+						   "dependency" -> Text(discoveryDependency.dependent.obj match {
+									case Full(d) => d.description.is
+									case _ => ""
+								}),
+						   "dependent" -> Text(discoveryDependency.dependency.obj match {
+									case Full(d) => d.description.is
+									case _ => ""
+								}),
+						   "comment" -> { discoveryDependency.comment.is match {
+									case null => ""
+									case comment => comment
+								}},
+						   AttrBindParam("editLink",Text("/dependency/" + discoveryDependency.id),"href")
+						 )
+			})
+	}
+	
 }

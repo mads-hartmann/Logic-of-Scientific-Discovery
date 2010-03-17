@@ -132,7 +132,6 @@ class AppTest extends TestCase("app") {
 		val b = new Boot()
     b.boot
 		
-		// test the common attributes for lab and scientist on a scientist
 		val s = Scientist.create.birth(1989).death(1900).name("long name (TEST)").nationality("Dansih") //C1
 		assertFalse(Scientist.trySave(s))
 		
@@ -159,25 +158,6 @@ class AppTest extends TestCase("app") {
 		a.name("validName(Test)").year(2020)
 		assertFalse(Award.trySave(a)) //C2		
 	}
-
-
-	/* __ INSTITUTION __
-		 The following tests checks the following constraints are in place 
-				-C1: Has to have a name
-				-C2: Has to have a nationality
-	*/
-	def testInstitution() = {
-		val b = new Boot()
-    b.boot
-		
-		val i = Institution.create.name("").nationality("validNationality")
-		assertFalse(Institution.trySave(i)) //C1
-		
-		i.name("validName").nationality("")
-		assertFalse(Institution.trySave(i)) //C2
-		
-	}
-	
 
 
   /**

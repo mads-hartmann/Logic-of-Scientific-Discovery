@@ -36,10 +36,10 @@ class Discovery extends LongKeyedMapper[Discovery] with IdPK {
 	object field extends MappedLongForeignKey(this, Field)
 	object isExperiment extends MappedBoolean(this)
 	// relationships
-	def sources = 
-		DiscoverySource.findAll(By(DiscoverySource.discovery,this.id)).map(_.source.obj.open_!)
-	def dependencies = 
-		DiscoveryDependency.findAll(By(DiscoveryDependency.dependent,this.id)).map(_.dependency.obj.open_!)
+	def sources = DiscoverySource.findAll(By(DiscoverySource.discovery,this.id)).map(_.source.obj.open_!)
+	def deleteSources = DiscoverySource.findAll(By(DiscoverySource.discovery, this.id)).foreach( _.delete_! )
+	
+	def dependencies = DiscoveryDependency.findAll(By(DiscoveryDependency.dependent,this.id)).map(_.dependency.obj.open_!)
   
 }
 object Discovery extends Discovery with LongKeyedMetaMapper[Discovery] with SafeSave[Discovery] {

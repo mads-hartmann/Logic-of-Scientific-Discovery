@@ -20,7 +20,7 @@ import http.SHtml._
 import http.provider.HTTPCookie
 import common._
 
-import model.{Discovery, Field, Scientist, Lab, Award}
+import model.{Discovery, Field, Scientist, Award}
 
 object RestAPI  {
 	
@@ -53,24 +53,27 @@ object RestAPI  {
 							bind("discovery", nodeseq, 
 								"description" -> discovery.description.is,
 								"year" -> discovery.year.is.toString,
-								"sources" -> discovery.sources.map{source => source match {
-									case s :Scientist => s.name
-									case l :Lab => l.name
-								}}.mkString(","),
+								"sources" -> discovery.sources.map{source: Scientist => source.name.is.toString}.mkString(","),
 								"isExperimental" -> discovery.isExperiment.is.toString,
 								"field" -> { discovery.field.obj match {
 									case Full(field) => Text(field.name.is.toString)
 									case _ => Text("")
 								}},
-								"dependencies" -> discovery.dependencies.flatMap{ dependency => 
-									bind("dependency", chooseTemplate("discovery","dependencies",nodeseq),
-										"description" -> dependency.description.is,
-										"year" -> dependency.year.is.toString,
-										"isExperimental" -> dependency.isExperiment.is.toString,
-										"field" -> { dependency.field.obj match {
-											case Full(field) => Text(field.name.is.toString)
-											case _ => Text("")
-										}})
+								"dependencies" -> {
+									if (discovery.dependencies.size > 0) {
+										discovery.dependencies.flatMap{ dependency => 
+										bind("dependency", chooseTemplate("discovery","dependencies",nodeseq),
+											"description" -> dependency.description.is,
+											"year" -> dependency.year.is.toString,
+											"isExperimental" -> dependency.isExperiment.is.toString,
+											"field" -> { dependency.field.obj match {
+												case Full(field) => Text(field.name.is.toString)
+												case _ => Text("")
+											}})
+									 }
+									} else {
+										Text("") // there's gotta be a better way to return an empty nodeseq
+									}
 								}
 							)).toJs
 						case _ => Jx(<h1>Couldnt find discovery</h1>).toJs	
@@ -92,16 +95,22 @@ object RestAPI  {
 										"death" -> scientist.death.toString,
 										"name" -> scientist.name.is,
 										AttrBindParam("image", {if(scientist.imageName == null) "" else "/images/%s".format(scientist.imageName.toString)}, "src"),
-										"discoveries" -> scientist.discoveries.flatMap{ discovery => 
-											bind("discovery", chooseTemplate("scientist","discoveries",nodeseq), 
-												"description" -> Text(discovery.description.is),
-												"year" -> Text(discovery.year.is.toString),
-												"experiment" ->Text(discovery.isExperiment.is.toString),
-												"field" -> { discovery.field.obj match {
-													case Full(field) => Text(field.name.is.toString)
-													case _ => Text("")
-												}})
-										})
+										"discoveries" -> {
+											if (scientist.discoveries.size > 0) {
+												scientist.discoveries.flatMap{ discovery => 
+													bind("discovery", chooseTemplate("scientist","discoveries",nodeseq), 
+														"description" -> Text(discovery.description.is),
+														"year" -> Text(discovery.year.is.toString),
+														"experiment" ->Text(discovery.isExperiment.is.toString),
+														"field" -> { discovery.field.obj match {
+															case Full(field) => Text(field.name.is.toString)
+															case _ => Text("")
+														}})
+													}
+											} else {
+												Text("")
+											}
+									})
 									).toJs
 							case _ => Jx(<h1>No template found</h1>).toJs
 					}
@@ -138,7 +147,7 @@ object RestAPI  {
 	
 	def sourcesJSON(): Box[LiftResponse] = {
 		Full(JavaScriptResponse(
-			JsArray((Scientist.findAllCustom.map{ scientist: Scientist => JsObj( 
+			JsArray((Scientist.findAll.map{ scientist: Scientist => JsObj( 
 				"id" -> scientist.id.toString,
 				"birth" -> scientist.birth.toString,
 				"death" -> scientist.death.toString,

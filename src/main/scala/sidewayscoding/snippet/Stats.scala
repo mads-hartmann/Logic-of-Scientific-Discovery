@@ -20,13 +20,11 @@ class Stats {
 	def displayStats(xhtml: NodeSeq): NodeSeq = {
 		
 		val scientistCount = Scientist.count
-		val labCount = Lab.count
 		
 		bind("stats", xhtml, 
 			 "discoveries" -> Discovery.count,
-			 "sources" -> (scientistCount+labCount).toString,
-			 "scientists" -> scientistCount,
-			 "labs" -> labCount)
+			 "sources" -> scientistCount.toString,
+			 "scientists" -> scientistCount)
 	 }
 	
 }

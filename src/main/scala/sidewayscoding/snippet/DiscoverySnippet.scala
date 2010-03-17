@@ -19,7 +19,7 @@ class DiscoverySnippet {
 
 	
 	object discovery extends RequestVar[Discovery]( defaultDiscovery() )
-	object source extends RequestVar[List[BaseSource]](List[BaseSource]())
+	object source extends RequestVar[List[Scientist]](List[Scientist]())
 	object discoveries extends RequestVar[List[Discovery]](List[Discovery]())
 	
 	def defaultDiscovery(): Discovery = {
@@ -38,15 +38,18 @@ class DiscoverySnippet {
 	}
 
 
+	
 	// this methods persists the user in the database
 	// TODO add validation (to the Discobery object) and account for it here
-	def processSubmit() = {
+	
+	def processSubmit() = if (Discovery.trySave(discovery)) {
+		discovery.deleteSources
+		source.is.foreach(DiscoverySource.join(_, discovery.is))
+		redirectTo("/discovery")
+	} 
+
 		
-		if (Discovery.trySave(discovery)) {
-			
-		}
-		
-	} 		
+
 	
 	
 	def deleteDiscovery() = {
@@ -60,11 +63,10 @@ class DiscoverySnippet {
 	*/
 	def displayForm(xhtml: NodeSeq): NodeSeq = {
 		
-		def processSources(in: List[String]) =  
-			source(in.map{ name => Scientist.findAll(By(Scientist.name,name)).first})
+		def processSources(in: List[String]) =  source(in.map{ name => Scientist.findAll(By(Scientist.name,name)).first})
 		
 		if (Field.count > 0) { //@TODO Clean this up?
-			val sources = Scientist.findAll(By(Scientist.sourceType,SourceTypes.Scientist)) ::: Lab.findAll(By(Lab.sourceType, SourceTypes.Lab))
+			val sources = Scientist.findAll
 			val sourceOptions = sources.map{ inst => (inst.name.is,inst.name.is) }
 
 			val fields = Field.findAll
@@ -113,7 +115,7 @@ class DiscoverySnippet {
 					  "year" -> Text(discovery.year.toString),
 					  "fielddd" -> Text(discovery.field.obj.open_!.name),
 					  "reference" -> Text(discovery.reference),
-					  "source" -> Text(discovery.sources.size.toString))
+					  "source" -> Text(discovery.sources.map(sci => sci.name.is).mkString(",")))
 			})	
 	}
 	

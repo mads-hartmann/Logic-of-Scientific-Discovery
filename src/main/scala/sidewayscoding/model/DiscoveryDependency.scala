@@ -6,6 +6,7 @@ import mapper._
 import http._
 import SHtml._ 
 import util._
+import lib.{SafeSave}
 
 class DiscoveryDependency extends LongKeyedMapper[DiscoveryDependency] with IdPK {
 
@@ -16,7 +17,7 @@ class DiscoveryDependency extends LongKeyedMapper[DiscoveryDependency] with IdPK
 	object comment extends MappedText(this)
 
 }
-object DiscoveryDependency extends DiscoveryDependency with LongKeyedMetaMapper[DiscoveryDependency] {
+object DiscoveryDependency extends DiscoveryDependency with LongKeyedMetaMapper[DiscoveryDependency] with SafeSave[DiscoveryDependency] {
 	def join (dependent :Discovery, dependency :Discovery): Box[DiscoveryDependency] = {
 		
 		if (dependent != dependency && dependent.year.is > dependency.year.is) {
