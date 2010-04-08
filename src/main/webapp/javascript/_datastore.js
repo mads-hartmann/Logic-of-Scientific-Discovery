@@ -1,56 +1,54 @@
 var createDatastore = function(){
 	
 	var obj = {},
-		discoveries = [];
+		discoveries = [],
+		min = 0,
+		max = 0;
 	
-	var isInInterval = function(min, max, value){
+	obj.isInInterval = function(min, max, value){
 		return (value < max && value > min);
-	};
-	
-	var genericFind = function( filterFunction ){
-		return $.map(discoveries, function(element){
-			if (filterFunction( element )) {
-				return element;
-			}
-		});
 	};
 	
 	obj.findExperimentsInTimespan = function(from,to){
 		
-		return genericFind( function(element) {
-			if ( element.isExperimental && isInInterval(year, from, to)) {
-				return true;
-			} else {
-				return false;
-			} 
+		return $.grep(discoveries,function(element) {
+			return ( element.field == "Experiment" && obj.isInInterval(from, to, element.year));
 		});
 		
+	};
+	obj.findExperimentsInScope = function(){
+		return obj.findExperimentsInTimespan(min, max);
 	};
 	
 	obj.findTechnologiesInTimespan = function(from,to){
 		
-		return genericFind( function(element) {
-			
-			
-			
+		return $.grep(discoveries,function(element) {
+			return ( element.field == "Technology" && obj.isInInterval(from, to, element.year));
 		});
 		
 	};
-	
-	obj.findTheoreticalDiscoveriesInTimespan = function(from,to){
-		
+	obj.findTechnologiesInScope = function(){
+		return obj.findTechnologiesInTimespan(min,max);
 	};
 	
-	$(document).bind('disocveriesLoaded', function(event,data) {
-		
-		discoveries = data.discoveries.concat(data.technologies);
-		
-		
+	obj.findTheoreticalDiscoveriesInTimespan = function(from,to){
+		return $.grep(discoveries,function(element) {
+			return ( element.field == "Theory" && obj.isInInterval(from, to, element.year));
+		});
+	};
+	obj.findTheoreticalDiscoveriesInScope = function(){
+		return obj.findTheoreticalDiscoveriesInTimespan(min,max);
+	};
+	
+	$(document).bind('discoveriesLoaded', function(event,data){
+		discoveries = data.discoveries;	
 	});
 	
+	$(document).bind('scopeChanged', function(event,data){
+		min = data.min;
+		max = data.max;
+	});
 	
 	return obj; 
 };
-
-
 var datastore = createDatastore();

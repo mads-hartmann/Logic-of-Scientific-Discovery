@@ -34,11 +34,12 @@ object RestAPI  {
 	
 	def discoveriesJSON(): Box[LiftResponse] = {
 		Full(JavaScriptResponse(
-			JsArray((Discovery.findAll.map{ discovery: Discovery => JsObj( 
+			JsArray((Discovery.findAll
+				.filter( _.isIdle )
+				.map{ discovery: Discovery => JsObj( 
 				"id" -> discovery.id.toString,
 				"description" -> discovery.description.is,
 				"year" -> discovery.year.is.toString,
-				"isExperimental" -> discovery.isExperiment.toString,
 				"field" -> discovery.field.obj.open_!.name.is,
 				"dependencies" -> JsArray((discovery.dependencies.map{ dependency => dependency.id.toString }): _*)
 			)}): _* ))
@@ -54,7 +55,6 @@ object RestAPI  {
 								"description" -> discovery.description.is,
 								"year" -> discovery.year.is.toString,
 								"sources" -> discovery.sources.map{source: Scientist => source.name.is.toString}.mkString(","),
-								"isExperimental" -> discovery.isExperiment.is.toString,
 								"field" -> { discovery.field.obj match {
 									case Full(field) => Text(field.name.is.toString)
 									case _ => Text("")
@@ -65,7 +65,6 @@ object RestAPI  {
 										bind("dependency", chooseTemplate("discovery","dependencies",nodeseq),
 											"description" -> dependency.description.is,
 											"year" -> dependency.year.is.toString,
-											"isExperimental" -> dependency.isExperiment.is.toString,
 											"field" -> { dependency.field.obj match {
 												case Full(field) => Text(field.name.is.toString)
 												case _ => Text("")
@@ -101,7 +100,6 @@ object RestAPI  {
 													bind("discovery", chooseTemplate("scientist","discoveries",nodeseq), 
 														"description" -> Text(discovery.description.is),
 														"year" -> Text(discovery.year.is.toString),
-														"experiment" ->Text(discovery.isExperiment.is.toString),
 														"field" -> { discovery.field.obj match {
 															case Full(field) => Text(field.name.is.toString)
 															case _ => Text("")
@@ -134,7 +132,6 @@ object RestAPI  {
 							"id" -> discovery.id.toString,
 							"description" -> discovery.description.is,
 							"year" -> discovery.year.is.toString,
-							"isExperimental" -> discovery.isExperiment.toString,
 							"field" -> discovery.field.obj.open_!.name.is
 						)
 					}): _*),

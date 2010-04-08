@@ -19,6 +19,9 @@ class Discovery extends LongKeyedMapper[Discovery] with IdPK {
 	def getSingleton = Discovery
 	
 	// primatives 
+	object title extends MappedTextarea(this,600) {
+		override def validations = valMinLen(1, "A title has to contain more than one char") _ :: Nil
+	}
 	object description extends MappedTextarea(this, 600){
 		override def validations = valMinLen(1, "A description has to contain more than one char") _ :: Nil
 	}
@@ -34,7 +37,8 @@ class Discovery extends LongKeyedMapper[Discovery] with IdPK {
 	}
 	object reference extends MappedPoliteString(this, 128)
 	object field extends MappedLongForeignKey(this, Field)
-	object isExperiment extends MappedBoolean(this)
+	object imageName extends MappedString(this,256)
+	object isIdle extends MappedBoolean(this)
 	// relationships
 	def sources = DiscoverySource.findAll(By(DiscoverySource.discovery,this.id)).map(_.source.obj.open_!)
 	def deleteSources = DiscoverySource.findAll(By(DiscoverySource.discovery, this.id)).foreach( _.delete_! )

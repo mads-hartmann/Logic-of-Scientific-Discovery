@@ -89,11 +89,11 @@ class DependencySnippet {
 		 	 "tablesorter" -> TableSorter("table"),
 			 "dependencies" -> DiscoveryDependency.findAll.flatMap{ discoveryDependency => 
 					bind("dependency", chooseTemplate("dependencies","dependencies",xhtml), 
-						   "dependency" -> Text(discoveryDependency.dependent.obj match {
+						   "dependent" -> Text(discoveryDependency.dependent.obj match {
 									case Full(d) => d.description.is
 									case _ => ""
 								}),
-						   "dependent" -> Text(discoveryDependency.dependency.obj match {
+						   "dependency" -> Text(discoveryDependency.dependency.obj match {
 									case Full(d) => d.description.is
 									case _ => ""
 								}),

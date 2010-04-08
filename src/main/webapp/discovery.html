@@ -9,22 +9,25 @@
 	<lift:bind-at name="content-left">
 
 		
-		<lift:DiscoverySnippet.displayForm form="POST" accept-charset="utf-8">
-			
+		<lift:DiscoverySnippet.displayForm form="POST" accept-charset="utf-8" multipart="true">
 			<fieldset id="discovery" class="">
 				<legend>Discovery</legend>
 				<ul>
 					<li>
+						<label for="title">Title</label> 
+						<form:title /> 
+					</li>
+					<li>
 						<label for="description">Description</label> 
 						<form:description /> 
+					</li>
+					<li>
+						<label for="image">Image</label> 
+						<form:imageUpload /> 
 					</li>
 					<li> 
 						<label for="year">Year</label> 
 						<form:year /> 
-					</li>
-					<li> 
-						<label for="experiment">Experiment</label> 
-						<form:isExp /> 
 					</li>
 					<li> 
 						<label for="source">Source</label> 
@@ -38,12 +41,14 @@
 						<label for="field">Field</label>  
 						<form:field /> 
 					</li>
+					<li>
+						<label for="isIdle">Is idle</label>  
+						<form:isIdle /> 
+					</li>
 				</ul>
 				<form:submit />
 				<form:delete />
-				
 			</fieldset>
-
 		</lift:DiscoverySnippet.displayForm>
 		
 	</lift:bind-at>
@@ -62,23 +67,29 @@
 			<table border="0" cellspacing="5" cellpadding="5" class="tablesorter">
 				<thead>
 					<tr>
+						<th>image</th>
+						<th>title</th>
 						<th>Description</th>
 						<th>Year</th>
 						<th>Feield</th>
 						<th>Redefence</th>
 						<th>Sources</th>
 						<th>Dependencies</th>
+						<th>status</th>
 					</tr>
 				</thead>
 				<tbody>
 					<discoveries:discoveries>
 						<tr>
-							<td> <a discovery:link="" target="_self"> <discovery:description /> </a></td>
+							<td> <img discovery:img="" alt="image" width="70px" height="70px"/> </td>
+							<td> <a discovery:link="" target="_self"> <discovery:title /> </a></td>
+							<td> <discovery:description /> </td>
 							<td> <discovery:year /> </td>
 							<td> <discovery:fielddd /> </td>
 							<td> <discovery:reference /> </td>
 							<td> <discovery:source /> </td>
 							<td> <discovery:dependencies /> </td>
+							<td> <discovery:isIdle /> </td>
 						</tr>
 					</discoveries:discoveries>
 				</tbody>

@@ -4,6 +4,7 @@ import xml.{Text, NodeSeq}
 import net.liftweb.util.Helpers._
 import net.liftweb.mapper._
 import net.liftweb.http.S._
+import net.liftweb.http.{FileParamHolder}
 import net.liftweb.http.SHtml._
 import net.liftweb.common._
 
@@ -37,7 +38,25 @@ class DiscoverySnippet {
 		}
 	}
 
-
+	def saveFile(fp: FileParamHolder): Unit = {
+    fp.file match {
+      case null => S.error("No file selected")
+      case x if x.length == 0 => S.error("Empty file uploaded")
+      case x =>
+        val blob = ImageBlob.create.image(x)
+				val img = ImageInfo.create.imgName(fp.fileName).mimeType(fp.mimeType)
+				discovery.imageName(fp.fileName)
+				img.validate match {
+				  case Nil =>
+				    blob.saveMe
+				    img.imgBlob(blob)
+				    img.saveMe
+				    S.notice("Thanks for the upload")
+				  case err =>
+				    S.error(err)
+				}
+    }
+  }
 	
 	// this methods persists the user in the database
 	// TODO add validation (to the Discobery object) and account for it here
@@ -48,10 +67,6 @@ class DiscoverySnippet {
 		redirectTo("/discovery")
 	} 
 
-		
-
-	
-	
 	def deleteDiscovery() = {
 		Discovery.delete_!(discovery)
 		redirectTo("/discovery")
@@ -77,23 +92,36 @@ class DiscoverySnippet {
 				if(discovery.is.saved_?) submit("Delete", deleteDiscovery,("class","btn")) 
 				else submit("Delete", deleteDiscovery,("class","btn"), ("disabled","disabled"))
 			bind("form", xhtml, 
+				 "title" 	-> textarea(discovery.title.is match {
+						case null => "Titel er ikke endnu angivet"
+						case title => title
+				}, discovery.is.title(_)),
 				 "description" 	-> textarea(discovery.description.is, discovery.is.description(_)),
 				 "year" 		-> text(discovery.is.year.is.toString, (in: String) => discovery.is.year(Integer.parseInt(in))),
-	 			 "source" 		-> multiSelect(sourceOptions, source.map{ _.toString }, processSources(_)),
+	 			 "source" 		-> multiSelect(sourceOptions, discovery.sources.map{ s => 
+						s.name.is
+					}, processSources(_)),
 				 "reference" 	-> text(discovery.is.reference.is,discovery.is.reference(_)),
-				 "field" 		-> selectObj[Field](fieldOptions,Full(fieldOptions.first._1),discovery.is.field(_)),
-				 "isExp"			-> checkbox(discovery.is.isExperiment, (b) => {discovery.is.isExperiment(b)}),
+				 "field" 		-> selectObj[Field](fieldOptions,Full(discovery.field.obj match {
+						case Full(f) => f
+						case _ => Field.create
+				}),discovery.is.field(_)),
+				 "isIdle" -> checkbox(discovery.isIdle, discovery.isIdle(_)),
+ 				 "imageUpload" -> fileUpload(saveFile _),
 				 "submit" 		-> submit("Gem", processSubmit,("class","btn")),
 				 "delete" 		-> deleteBtn
 				)
 		} else {
 			S.error("I'm sorry, but you have to add a field before you can add a discovery")
 			bind("form", xhtml, 
+				 "title" 	-> Text(""),
 				 "description" 	-> Text(""),
 				 "year" 		-> Text(""),
 	 			 "source" 		-> Text(""), 
 				 "reference" 	-> Text(""),
 				 "field" 		-> Text(""),
+				 "isIdle" -> Text(""),
+				 "imageUpload" -> Text(""),
 				 "submit" 		-> Text(""),
 				 "delete" 		-> Text("")
 				)
@@ -109,13 +137,28 @@ class DiscoverySnippet {
 			 "discoveries" -> Discovery.findAll.flatMap{
 				discovery => 
 				 bind("discovery", chooseTemplate("discoveries","discoveries",xhtml), 
+						AttrBindParam("img",Text("/images/%s".format(discovery.imageName)),"src"),
+						"title" -> Text(discovery.title.is match {
+								case null => "Titel er ikke endnu angivet"
+								case title => title
+						}),
 					  "description" -> Text(discovery.description),
-					  "dependencies" -> Text(discovery.dependencies.size.toString),
+					  "dependencies" -> Text(discovery.dependencies.map{ d: Discovery => d.title.is match {
+								case null => "Titel er ikke endnu angivet"
+								case title => title
+							}}.mkString(",")),
 					  AttrBindParam("link",Text("/discovery/" + discovery.id),"href"),
 					  "year" -> Text(discovery.year.toString),
-					  "fielddd" -> Text(discovery.field.obj.open_!.name),
+					  "fielddd" -> Text(discovery.field.obj match {
+							case Full(field) => field.name
+							case _ => "No field"
+						}),
 					  "reference" -> Text(discovery.reference),
-					  "source" -> Text(discovery.sources.map(sci => sci.name.is).mkString(",")))
+					  "source" -> Text(discovery.sources.map(sci => sci.name.is).mkString(",")),
+						"isIdle" -> Text( discovery.isIdle.is match {
+							case true => "Idle"
+							case false => "Active"
+						}))
 			})	
 	}
 	

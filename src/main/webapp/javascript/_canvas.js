@@ -13,6 +13,17 @@
 		maxYear = minYear + yearsPrScreen,
 		discoveryGraphics = [],
 		raphaelCanvas = null;
+	
+	var findGraphicsForModels = function(models) {
+		
+		return $.grep(discoveryGraphics, function(e){
+			if (e !== undefined) {
+				console.log(e); // @DEBUGGING
+				return ($.inArray( e.model(), models) != -1 );
+			}
+		});
+		
+	};
 		
 	// creates the canvas	
 	var createCanvas = function() {
@@ -64,6 +75,26 @@
 				raphaelCanvas = Raphael('paper',width,height);
 			}());
 
+
+			// $('#experiments_label').hover(function() {
+			// 	$.each(findGraphicsForModels(datastore.findExperimentsInScope()),function(index,element) {
+			// 		element.onMouseOver();
+			// 	});
+			// }, function() {
+			// 	// Stuff to do when the mouse leaves the element;
+			// });
+			// $('#theory_label').hover(function() {
+			// 	console.log(findGraphicsForModels( datastore.findTheoreticalDiscoveriesInScope() ));
+			// }, function() {
+			// 	// Stuff to do when the mouse leaves the element;
+			// });
+			// $('#technology_label').hover(function() {
+			// 	$.each(findGraphicsForModels(datastore.findTechnologiesInScope()),function(index,element) {
+			// 		element.onMouseOver();
+			// 	});
+			// }, function() {
+			// 	// Stuff to do when the mouse leaves the element;
+			// });
 			
 			$('#zoomout_btn').bind('click',function(){ zoomOut(); });
 			$('#zoomin_btn').bind('click',function(){ zoomIn(); });
@@ -84,14 +115,14 @@
 					$('#paper').unbind('mousemove');
 				})
 				.bind('dblclick', function( event ){
-					var clickedYear = calculateYearFromXCoordinate(event.clientX );
-
-					minYear = clickedYear - yearsPrScreen/2;	
-					maxYear = clickedYear + yearsPrScreen/2;
-					yearsPrScreen = yearsPrScreen-10;
-
-					$(document).trigger('zoomChanged', { min: minYear, max: maxYear, yearsPrScreen: yearsPrScreen});
-					$(document).trigger('scopeChanged', { min: minYear, max: maxYear, yearsPrScreen: yearsPrScreen});
+					// var clickedYear = calculateYearFromXCoordinate(event.clientX );
+					// 
+					// 					minYear = clickedYear - yearsPrScreen/2;	
+					// 					maxYear = clickedYear + yearsPrScreen/2;
+					// 					yearsPrScreen = yearsPrScreen-10;
+					// 
+					// 					$(document).trigger('zoomChanged', { min: minYear, max: maxYear, yearsPrScreen: yearsPrScreen});
+					// 					$(document).trigger('scopeChanged', { min: minYear, max: maxYear, yearsPrScreen: yearsPrScreen});
 				});
 		});
 
@@ -118,33 +149,7 @@
 			return width / yearsPrScreen / 2; // it's the radius, not width. 
 		};
 		
-		function onMouseClick(event) {
-			$.get("/json/markup/discovery/"+modelDiscovery.id, function(data){
-				eval(data);
-				$.facebox(createMarkup());
-			});
-			event.stopPropagation();
-		};
-
-		function onDoubleClick(event) {
-			event.stopPropagation(); // prevents the canvas from zooming
-		};
-
-		function onMouseOver(event){
-			raphaelGraphics.animate({
-				'stroke-width': 5,
-				'scala': 2,
-				'opacity': 0.9
-			},100);
-		};
-
-		function onMouseOut(event){
-			raphaelGraphics.animate({
-				'stroke-width': 2,
-				'scale': 1,
-				'opacity': 0.5
-			},100);
-		};
+		
 		
 		(function(){ // draw the circle
 			var y_offset = drawingHelper.yOffsetOfElementInCanvas(modelDiscovery, $('#paper')),
@@ -158,15 +163,80 @@
 					"stroke-width" : calculateWidth()/10, 
 					"opacity" : 0.5 , 'scale':1
 				});
-				
-			// bind events
+		}());
+		
+		
+		(function() { // add the events
+			var onMouseClick = function(event) {
+				$.get("/json/markup/discovery/"+modelDiscovery.id, function(data){
+					eval(data);
+					$.facebox(createMarkup());
+				});
+				event.stopPropagation();
+			};
+
+			var onDoubleClick = function(event) {
+				event.stopPropagation(); // prevents the canvas from zooming
+			};
+
+			var onMouseOver = function(event){
+				raphaelGraphics.animate({
+					'stroke-width': 5,
+					'scala': 2,
+					'opacity': 0.9
+				},100);
+			};
+
+			var onMouseOut = function(event){
+				raphaelGraphics.animate({
+					'stroke-width': 2,
+					'scale': 1,
+					'opacity': 0.5
+				},100);
+			};
+			
 			$(raphaelGraphics.node)
 				.bind('click',function(event){ onMouseClick(event); })
 				.bind('mouseover',function(event){ onMouseOver(event); })
 				.bind('mouseout',function(event){ onMouseOut(event); })
 				.bind('dblclick', function(event){ onDoubleClick(event); })
 				.css({'cursor':'pointer'});
+			
+			$('#technology_label').hover(function() {
+				if ( modelDiscovery.field == "Technology") {
+					$(raphaelGraphics.node).trigger('mouseover');
+				}
+			},function() {
+				if ( modelDiscovery.field == "Technology") {
+					$(raphaelGraphics.node).trigger('mouseout');
+				}
+			});
+			
+			$('#experiments_label').hover(function() {
+				if ( modelDiscovery.field == "Experiment") {
+					$(raphaelGraphics.node).trigger('mouseover');
+				}
+			},function() {
+				if ( modelDiscovery.field == "Experiment") {
+					$(raphaelGraphics.node).trigger('mouseout');
+				}
+			});
+			
+			$('#theory_label').hover(function() {
+				if ( modelDiscovery.field == "Theory") {
+					$(raphaelGraphics.node).trigger('mouseover');
+				}
+			},function() {
+				if ( modelDiscovery.field == "Theory") {
+					$(raphaelGraphics.node).trigger('mouseout');
+				}
+			});
+			
 		}());
+		
+		obj.model = function(){
+			return modelDiscovery;
+		};
 		
 		obj.yOffset = function() {
 			return raphaelGraphics.attrs.cy;
@@ -229,7 +299,7 @@
 	};
 	
 	$(document).bind('discoveriesLoaded',function(event,data){
-		var arr = data.discoveries.concat(data.technologies);
+		var arr = data.discoveries;
 
 		$.each(arr, function(index,element){
 			var id = element.id;

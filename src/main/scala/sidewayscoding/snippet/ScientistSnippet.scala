@@ -78,7 +78,7 @@ class ScientistSnippet {
 						"death" 		-> text(scientist.is.death.is.toString, (in: String) => scientist.is.death(Integer.parseInt(in))),
 						"nationality" 	-> text(scientist.is.nationality, scientist.is.nationality(_)),
 						"delete" 		-> deleteBtn,
-						"imageUpload"			-> fileUpload(saveFile _),
+						"imageUpload"	-> fileUpload(saveFile _),
 						"submit" 		-> submit("Save", processSubmit,("class","btn") ),
 						"awards" 		-> multiSelect(awardOptions, selectedAwards.map{ _.toString }, processAwards(_)))
 			}
@@ -90,6 +90,7 @@ class ScientistSnippet {
 			 "sources" -> Scientist.findAll.flatMap{ scientist => 
 					bind("source", chooseTemplate("sources","sources",xhtml), 
 						  "name" -> Text(scientist.name),
+							AttrBindParam("img",Text("/images/%s".format(scientist.imageName.toString)),"src"),
 						  AttrBindParam("link",Text("/person/" + scientist.id),"href"),
 						  "birth" -> Text(scientist.birth.toString),
 						  "death" -> Text(scientist.death.toString),

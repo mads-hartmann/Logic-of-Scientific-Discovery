@@ -38,7 +38,7 @@ class FieldSnippet {
 	}
 	
 	def displayForm(xhtml: NodeSeq): NodeSeq = {
-		
+				
 		val deleteBtn = 
 			if(Field.saved_?(field.is)) submit("Delete", deleteField,("class","btn")) 
 			else submit("Delete", deleteField,("class","btn"), ("disabled","disabled"))
