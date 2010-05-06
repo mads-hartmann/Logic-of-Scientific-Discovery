@@ -1,12 +1,12 @@
 package sidewayscoding.model
 
-import _root_.net.liftweb.mapper._
-import _root_.net.liftweb.util._
-import _root_.net.liftweb.common._
-import _root_.net.liftweb.http._
-import _root_.net.liftweb.util._
+import net.liftweb.mapper._
+import net.liftweb.util._
+import net.liftweb.common._
+import net.liftweb.http._
+import net.liftweb.util._
 import Helpers._
-import _root_.scala.xml._
+import scala.xml._
 
 class ImageBlob extends LongKeyedMapper[ImageBlob] with IdPK {
   def getSingleton = ImageBlob
@@ -23,6 +23,7 @@ class ImageInfo extends LongKeyedMapper[ImageInfo] with IdPK {
     override def defaultValue = Helpers.millis
   }
   object mimeType extends MappedPoliteString(this, 64)
+	object description extends MappedText(this)
   object imgName extends MappedPoliteString(this, 256) {
     override def dbIndexed_? = true
     override def defaultValue = ""

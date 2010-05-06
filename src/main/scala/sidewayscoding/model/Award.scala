@@ -5,16 +5,15 @@ import mapper._
 import http._
 import SHtml._ 
 import util._
-import net.liftweb.common._
 import xml.{Text, NodeSeq}
-import lib.{SafeSave}
+import sidewayscoding.lib.{SafeSave}
 import java.util.Date
 
 class Award extends LongKeyedMapper[Award] with IdPK {
   
-	def getSingleton = Award
+  def getSingleton = Award
 
-	object name extends MappedPoliteString(this, 128) {
+  object name extends MappedPoliteString(this, 128) {
 		override def validations = valMinLen(1, "The name cannot be empty") _ :: Nil
 	}
 	object year extends MappedInt(this) {
@@ -28,7 +27,7 @@ class Award extends LongKeyedMapper[Award] with IdPK {
 		override def validations = validateYear _ :: Nil
 	}
 	def sources = AwardSource.findAll(By(AwardSource.award,this)).map(_.award.obj.open_!)
-  
+
 }
 object Award extends Award with LongKeyedMetaMapper[Award] with SafeSave[Award] {
 	

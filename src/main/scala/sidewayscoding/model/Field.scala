@@ -6,7 +6,7 @@ import mapper._
 import http._
 import SHtml._ 
 import util._
-import lib.{SafeSave}
+import sidewayscoding.lib.{SafeSave}
 
 class Field extends LongKeyedMapper[Field] with IdPK {
   

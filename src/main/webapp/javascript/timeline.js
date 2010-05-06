@@ -322,6 +322,7 @@ function gui(){
 (function(){
 	
 	$(document).ready(function() {
+		
 		$(document).bind('guiLoaded',function(){
 			// get data and create discoveries
 			$.get('http://localhost:8080/json/discoveries', function(data){
@@ -338,5 +339,28 @@ function gui(){
 		});
 
 		gui();
+		
+		// live bindings 
+		$(".facebox").live('click', function() {
+			var that = $(this),
+					discoveryId = that.attr('rel'),
+					href = that.attr('href');
+			$.get("/json/discovery/" + discoveryId + "/image", function(data){
+				var d = eval(data);
+				$.facebox('<a class="discovery_link"><span style="display:none;">' + discoveryId + '</span><img src="'+ href +'" width="500px" height="500px"/><p>'+ description +'</p></a>');
+			});
+			return false;
+		});
+		
+		$('a.discovery_link').live('click',function(event) {
+			var id = $(this).find('span').text();
+			setTimeout(function() {
+				$.get("/json/markup/discovery/"+id, function(data){
+					eval(data);
+					$.facebox(createMarkup());
+				});
+			}, 550);
+			$('#paper').trigger('centerCanvasAt',{ year: datastore.findDiscoveryById(id).pop().year, 'forceIt' : true});
+		});
 	});
 }());

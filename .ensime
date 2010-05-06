@@ -1,0 +1,19 @@
+(
+:server-root "/Developer/ensime/"
+:server-cmd  "bin/server.sh"
+:server-host "localhost"
+:server-env ()
+
+:project-package "com.ensime"
+:source ("src")
+:exclude-source ()
+:classpath ("/Developer/scala-2.8.0/lib/scala-library.jar"
+	    "/Developer/scala-2.8.0/lib/scala-compiler.jar"
+	    "/Users/Mads/dev/logicOfScientificDiscovery/lib_managed/scala_2.8.0.Beta1/compile/lift-actor-2.0-scala280-SNAPSHOT.jar"
+	    "/Users/Mads/dev/logicOfScientificDiscovery/lib_managed/scala_2.8.0.Beta1/compile/lift-common-2.0-scala280-SNAPSHOT.jar"
+	    "/Users/Mads/dev/logicOfScientificDiscovery/lib_managed/scala_2.8.0.Beta1/compile/lift-json-2.0-scala280-SNAPSHOT.jar"
+	    "/Users/Mads/dev/logicOfScientificDiscovery/lib_managed/scala_2.8.0.Beta1/compile/lift-mapper-2.0-scala280-SNAPSHOT.jar"
+	    "/Users/Mads/dev/logicOfScientificDiscovery/lib_managed/scala_2.8.0.Beta1/compile/lift-util-2.0-scala280-SNAPSHOT.jar"
+	    "/Users/Mads/dev/logicOfScientificDiscovery/lib_managed/scala_2.8.0.Beta1/compile/lift-webkit-2.0-scala280-SNAPSHOT.jar"
+	    "/Users/Mads/dev/logicOfScientificDiscovery/lib_managed/scala_2.8.0.Beta1/compile/lift-widgets-2.0-scala280-SNAPSHOT.jar")
+)

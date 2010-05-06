@@ -24,7 +24,7 @@ object DiscoverySource extends DiscoverySource with LongKeyedMetaMapper[Discover
 		if (validate(source.birth,source.death,discovery.year)) {
 			this.create.source(source.id).discovery(discovery).save
 			S.notice("Just saved a discovery")
-			true
+			true      
 		} else {
 			S.error("Sorry, the scientsit(s) couldnt have made that discovery.")
 			println("wasn't valid") //@DEBUG

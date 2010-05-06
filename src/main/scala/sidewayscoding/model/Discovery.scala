@@ -10,7 +10,7 @@ import http._
 import SHtml._ 
 import util._
 import net.liftweb.common._
-import lib.{SafeSave}
+import sidewayscoding.lib.{SafeSave}
 import xml.{Text}
 import java.util.Date
 
@@ -39,12 +39,27 @@ class Discovery extends LongKeyedMapper[Discovery] with IdPK {
 	object field extends MappedLongForeignKey(this, Field)
 	object imageName extends MappedString(this,256)
 	object isIdle extends MappedBoolean(this)
+	
+	
 	// relationships
+	def image = ImageInfo.find(By(ImageInfo.imgName,this.imageName)) match {
+		case Full(image) => Full(image)
+		case _ => Empty
+	}
 	def sources = DiscoverySource.findAll(By(DiscoverySource.discovery,this.id)).map(_.source.obj.open_!)
 	def deleteSources = DiscoverySource.findAll(By(DiscoverySource.discovery, this.id)).foreach( _.delete_! )
 	
+	
+	def dependenciesWithComments = DiscoveryDependency.findAll(By(DiscoveryDependency.dependent,this.id)).map{ dependency => 
+		(dependency.dependency.obj.open_!, dependency.comment.is)
+	}
+		
+	def dependentsWithComments = DiscoveryDependency.findAll(By(DiscoveryDependency.dependency,this.id)).map{ dependent => 
+		(dependent.dependent.obj.open_!, dependent.comment.is)
+	}
 	def dependencies = DiscoveryDependency.findAll(By(DiscoveryDependency.dependent,this.id)).map(_.dependency.obj.open_!)
-  
+	def dependents = DiscoveryDependency.findAll(By(DiscoveryDependency.dependency,this.id)).map(_.dependent.obj.open_!)
+ 		 
 }
 object Discovery extends Discovery with LongKeyedMetaMapper[Discovery] with SafeSave[Discovery] {
 	

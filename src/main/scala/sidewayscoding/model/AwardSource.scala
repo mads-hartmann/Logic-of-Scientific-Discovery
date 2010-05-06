@@ -7,6 +7,7 @@ import http._
 import SHtml._ 
 import util._
 
+
 class AwardSource extends LongKeyedMapper[AwardSource] with IdPK {
 
 	def getSingleton = AwardSource
@@ -19,7 +20,7 @@ class AwardSource extends LongKeyedMapper[AwardSource] with IdPK {
 object AwardSource extends AwardSource with LongKeyedMetaMapper[AwardSource] {
 	
 	def join (source :Scientist, award :Award) = 
-		this.create.source(source.id).award(award).save	
-	
-	
+		this.create.source(source.id).award(award).save		
+		
 }
+

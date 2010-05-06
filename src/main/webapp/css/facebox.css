@@ -42,7 +42,7 @@
 #facebox .body {
   padding: 10px;
   background: #fff;
-  width: 370px;
+  min-width: 370px;
 }
 
 #facebox .loading {
@@ -67,7 +67,7 @@
 
 #facebox .tl, #facebox .tr, #facebox .bl, #facebox .br {
   height: 10px;
-  width: 10px;
+  width: 6px;
   overflow: hidden;
   padding: 0;
 }

@@ -1,20 +1,23 @@
 <div>
 	<h1><scientist:name /></h1>
-	<h2><scientist:name /> was born <scientist:birth/> and died at <scientist:death/></h2>
-	<scientist:discoveries>
-	<table>
+	<h2 class="clearfix"><img scientist:image="" style="float:left; margin: 0px 10px 10px 10px;" width="140px" height="140px"/>
+		<scientist:name /> was born <scientist:birth/> and died at <scientist:death/></h2>
+	<table style="clear:both;">
 		<tr>
-			<th>Description</th>
+			<th>Discovery</th>
 			<th>Year</th>
-			<th>Experiment</th>
 			<th>Field</th>
 		</tr>
+		<scientist:discoveries>
 		<tr>
-			<td> <discovery:description /> </td>
+			<td> <a href="#" class="discovery_link">
+				<span style="display:none;"><discovery:id /></span>
+				<discovery:name /></a>
+			</td>
 			<td> <discovery:year /> </td>
-			<td> <discovery:experiment /> </td>
 			<td> <discovery:field /> </td>
 		</tr>
+		</scientist:discoveries>	
 	</table>
-	</scientist:discoveries>	
+	
 </div>

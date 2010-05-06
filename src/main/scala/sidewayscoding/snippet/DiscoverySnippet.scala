@@ -22,7 +22,13 @@ class DiscoverySnippet {
 	object discovery extends RequestVar[Discovery]( defaultDiscovery() )
 	object source extends RequestVar[List[Scientist]](List[Scientist]())
 	object discoveries extends RequestVar[List[Discovery]](List[Discovery]())
+	object imageDescription extends RequestVar[String]( defaultImageDescription() )
 	
+	def defaultImageDescription(): String = discovery.image match { 
+		case Full(image) => image.description.is
+		case _ => ""
+	}
+
 	def defaultDiscovery(): Discovery = {
 		S.param("id") match { 
 			case Full(idStr) => {
@@ -44,7 +50,7 @@ class DiscoverySnippet {
       case x if x.length == 0 => S.error("Empty file uploaded")
       case x =>
         val blob = ImageBlob.create.image(x)
-				val img = ImageInfo.create.imgName(fp.fileName).mimeType(fp.mimeType)
+				val img = ImageInfo.create.imgName(fp.fileName).mimeType(fp.mimeType).description(imageDescription.is)
 				discovery.imageName(fp.fileName)
 				img.validate match {
 				  case Nil =>
@@ -62,6 +68,13 @@ class DiscoverySnippet {
 	// TODO add validation (to the Discobery object) and account for it here
 	
 	def processSubmit() = if (Discovery.trySave(discovery)) {
+		
+		// update the description of the image
+		discovery.image match { 
+			case Full(image) => image.description( imageDescription.is ).save
+			case _ => 
+		}
+		//everything else
 		discovery.deleteSources
 		source.is.foreach(DiscoverySource.join(_, discovery.is))
 		redirectTo("/discovery")
@@ -78,7 +91,7 @@ class DiscoverySnippet {
 	*/
 	def displayForm(xhtml: NodeSeq): NodeSeq = {
 		
-		def processSources(in: List[String]) =  source(in.map{ name => Scientist.findAll(By(Scientist.name,name)).first})
+		def processSources(in: List[String]) =  source(in.map{ name => Scientist.findAll(By(Scientist.name,name)).head})
 		
 		if (Field.count > 0) { //@TODO Clean this up?
 			val sources = Scientist.findAll
@@ -97,6 +110,7 @@ class DiscoverySnippet {
 						case title => title
 				}, discovery.is.title(_)),
 				 "description" 	-> textarea(discovery.description.is, discovery.is.description(_)),
+				 "imageDescription" 	-> textarea(imageDescription.is, imageDescription(_)),
 				 "year" 		-> text(discovery.is.year.is.toString, (in: String) => discovery.is.year(Integer.parseInt(in))),
 	 			 "source" 		-> multiSelect(sourceOptions, discovery.sources.map{ s => 
 						s.name.is

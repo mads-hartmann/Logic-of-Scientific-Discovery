@@ -7,6 +7,13 @@
 
 // typp
 
+.clearfix
+  +clearfix
+
+.popup 
+  :width 600px
+  table
+    :width 100%
 body
   :font normal 12px/16px Arial
 
@@ -71,7 +78,19 @@ body
       small
         :font normal 12px/14px Helvetica, Arial
         
-
+.discovery_box 
+  +clearfix
+  .left
+    :width 150px
+    :float left
+    :text-align left
+    :padding-left 30px
+  .right
+    :width 150px
+    :float right
+    :text-align right
+    :padding-right 30px
+  
 #messages
   :font bold 12px solid Helvetica, Arial
   :color white

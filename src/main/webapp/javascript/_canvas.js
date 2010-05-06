@@ -9,8 +9,10 @@
 	var width = 0,
 		height = 0,
 		yearsPrScreen = 60,
-		minYear = 0,
+		minYear = -400,
 		maxYear = minYear + yearsPrScreen,
+		absoluteMin = -400,
+		absoluteMax = 2009,
 		discoveryGraphics = [],
 		raphaelCanvas = null;
 	
@@ -18,7 +20,6 @@
 		
 		return $.grep(discoveryGraphics, function(e){
 			if (e !== undefined) {
-				console.log(e); // @DEBUGGING
 				return ($.inArray( e.model(), models) != -1 );
 			}
 		});
@@ -28,15 +29,16 @@
 	// creates the canvas	
 	var createCanvas = function() {
 		
-		var centerCanvasAt = function( year ){
+		
+		var centerCanvasAt = function( year, forceIt ){
 			
-			var doAnimate = (year > maxYear+10 || year < minYear-10) ? true  : false ;
-			
-			if (year+yearsPrScreen/2 > 2009) { 
+			var doAnimate = (forceIt || year > maxYear+10 || year < minYear-10) ? true  : false ;
+						
+			if (year+yearsPrScreen/2 > absoluteMax) { 
 				minYear = 2009 - yearsPrScreen;
-				maxYear = 2009; //@TODO absolute max year is hard-coded here
-			} else if ( year-yearsPrScreen/2 < 0) { 
-				minYear = 0; //@TODO absolute min year is hard-coded here
+				maxYear = absoluteMax; 
+			} else if ( year-yearsPrScreen/2 < absoluteMin) { 
+				minYear = absoluteMin; 
 				maxYear = yearsPrScreen;
 			} else {
 				minYear = year - yearsPrScreen/2;	
@@ -66,6 +68,7 @@
 			maxYear = maxYear + 10; 
 			$(document).trigger('zoomChanged', { min: minYear, max: maxYear, yearsPrScreen: yearsPrScreen});
 		};
+
 		
 		$(document).bind('guiLoaded',function(){ // initialize & bind events
 
@@ -74,27 +77,11 @@
 				height = $('#paper').height();
 				raphaelCanvas = Raphael('paper',width,height);
 			}());
-
-
-			// $('#experiments_label').hover(function() {
-			// 	$.each(findGraphicsForModels(datastore.findExperimentsInScope()),function(index,element) {
-			// 		element.onMouseOver();
-			// 	});
-			// }, function() {
-			// 	// Stuff to do when the mouse leaves the element;
-			// });
-			// $('#theory_label').hover(function() {
-			// 	console.log(findGraphicsForModels( datastore.findTheoreticalDiscoveriesInScope() ));
-			// }, function() {
-			// 	// Stuff to do when the mouse leaves the element;
-			// });
-			// $('#technology_label').hover(function() {
-			// 	$.each(findGraphicsForModels(datastore.findTechnologiesInScope()),function(index,element) {
-			// 		element.onMouseOver();
-			// 	});
-			// }, function() {
-			// 	// Stuff to do when the mouse leaves the element;
-			// });
+			
+			$('#paper').bind('centerCanvasAt', function(event,data) {
+				$.facebox.close();
+				centerCanvasAt(parseInt(data.year), data.forceIt);
+			});
 			
 			$('#zoomout_btn').bind('click',function(){ zoomOut(); });
 			$('#zoomin_btn').bind('click',function(){ zoomIn(); });
@@ -284,11 +271,21 @@
 		
 		obj.drawLines = function (){ //function to draw the lines 
 			
-			var lines = $.map(modelDiscovery.dependencies, function(dependencyId){
-						var dependencyGraphic = discoveryGraphics[dependencyId];
-							pathString = drawingHelper.createPathStringFromTo(obj, dependencyGraphic);
+			var lines = $.map(modelDiscovery.dependencies, function(dependencyObj){
+						var dependencyGraphic = discoveryGraphics[dependencyObj.id],
+								pathString = drawingHelper.createPathStringFromTo(obj, dependencyGraphic),
+								line = raphaelCanvas.path(pathString).attr({'stroke':'#fff', 'stroke-width':3,"opacity" : 0.4});
+						$(line.node)
+							.hover(function() {
+								line.attr({'stroke':'#fff', 'stroke-width':4,"opacity" : 1.0});
+							},function() {
+								line.attr({'stroke':'#fff', 'stroke-width':3,"opacity" : 0.4});
+							})
+							.bind('click',function() {
+								$.facebox('<p>' + dependencyObj.comment + '</p>');
+							});
 						return 	{
-							'line' : raphaelCanvas.path(pathString).attr({'stroke':'#fff', 'stroke-width':2,"opacity" : 0.2}),
+							'line' : line,
 							'dependencyGraphics' : dependencyGraphic
 						};
 				});

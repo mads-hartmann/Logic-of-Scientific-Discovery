@@ -1,7 +1,7 @@
 package sidewayscoding.api
 
-import _root_.net.liftweb.util._
-import _root_.net.liftweb.http._
+import net.liftweb.util._
+import net.liftweb.http._
 import Helpers._
 import net.liftweb.common._
 import provider.HTTPRequest
@@ -20,7 +20,7 @@ import http.SHtml._
 import http.provider.HTTPCookie
 import common._
 
-import model.{Discovery, Field, Scientist, Award}
+import sidewayscoding.model.{Discovery, Field, Scientist, Award, ImageInfo}
 
 object RestAPI  {
 	
@@ -28,60 +28,84 @@ object RestAPI  {
 		case Req(List("json","discoveries"), "", GetRequest) => () => discoveriesJSON()
 		case Req(List("json","scientists"),"", GetRequest) => () => sourcesJSON()
 		case Req(List("json","scientist",name),"", GetRequest) => () => getScientist(name)
+		case Req(List("json","scientist",name),"", PostRequest) => () => getScientist(name)
 		case Req(List("json","markup","scientist",name),"", GetRequest) => () => getMarkupForScientist(name)
 		case Req(List("json","markup","discovery",id),"", GetRequest) => () => getMarkupForDiscovery(id)
+		case Req(List("json","discovery",id,"image"),"", GetRequest) => () => getImage(id)
 	}
-	
+		
+	def getImage(id: String) = {
+		Discovery.find(By(Discovery.id,Integer.parseInt(id))) match {
+			case Full(disc) => disc.image match {
+				// case Full(image) => Full(JavaScriptResponse(JsObj(
+				// 					"id" -> image.id.toString,
+				// 					"description" -> image.description.toString,
+				// 					"name" -> image.imgName.toString
+				// 				)))
+				case Full(image) => Full(JavaScriptResponse( JsCrVar("description", image.description.toString)))
+				case _ => Full(JavaScriptResponse(Str("no image")))
+			}
+			case _ => Full(JavaScriptResponse(Str("no discovery")))
+		}
+	}
+		
 	def discoveriesJSON(): Box[LiftResponse] = {
 		Full(JavaScriptResponse(
 			JsArray((Discovery.findAll
-				.filter( _.isIdle )
+				.filter( !_.isIdle )
 				.map{ discovery: Discovery => JsObj( 
 				"id" -> discovery.id.toString,
 				"description" -> discovery.description.is,
 				"year" -> discovery.year.is.toString,
-				"field" -> discovery.field.obj.open_!.name.is,
-				"dependencies" -> JsArray((discovery.dependencies.map{ dependency => dependency.id.toString }): _*)
+				"field" -> discovery.field.obj.open_!.name.is.trim,
+				"dependencies" -> JsArray((discovery.dependenciesWithComments.map{ tuple => 
+					JsObj(
+						"id"-> tuple._1.id.toString,
+						"comment" -> tuple._2.toString) 
+				}): _*)
 			)}): _* ))
 		)
 	}
-	
+  
 	def getMarkupForDiscovery(id: String) = {
+		
+		def bindDependencies(xhtml: NodeSeq, discovery :Discovery) = {
+			discovery.dependencies.flatMap{ dependency => 
+				bind( "dependency", chooseTemplate("discovery","dependencies",xhtml),
+							"name" -> dependency.title.is,
+							"id" -> dependency.id.is.toString
+			)}
+		}
+		
+		def bindDependents(xhtml: NodeSeq, discovery: Discovery): NodeSeq = {
+			discovery.dependents.flatMap{ dependent => 
+				bind( "dependent", chooseTemplate("discovery","dependents",xhtml),
+							"name" -> dependent.title.is,
+							"id" -> dependent.id.is.toString
+			)}
+		}
+		
 		Full(JavaScriptResponse(
 			JsCrVar("createMarkup", TemplateFinder.findAnyTemplate(List("discovery_facebox")) match {
 				case Full(nodeseq) => Discovery.find(By(Discovery.id, Integer.parseInt(id))) match {
 						case Full(discovery) => Jx(
 							bind("discovery", nodeseq, 
+								"title" -> discovery.title.is,
 								"description" -> discovery.description.is,
 								"year" -> discovery.year.is.toString,
+								AttrBindParam("image", {if(discovery.imageName == null) "" else "/images/%s".format(discovery.imageName.toString)}, "src"),
+								AttrBindParam("id", discovery.id.is, "rel"),
+								AttrBindParam("imagehref", {if(discovery.imageName == null) "" else "/images/%s".format(discovery.imageName.toString)}, "href"),
 								"sources" -> discovery.sources.map{source: Scientist => source.name.is.toString}.mkString(","),
-								"field" -> { discovery.field.obj match {
-									case Full(field) => Text(field.name.is.toString)
-									case _ => Text("")
-								}},
-								"dependencies" -> {
-									if (discovery.dependencies.size > 0) {
-										discovery.dependencies.flatMap{ dependency => 
-										bind("dependency", chooseTemplate("discovery","dependencies",nodeseq),
-											"description" -> dependency.description.is,
-											"year" -> dependency.year.is.toString,
-											"field" -> { dependency.field.obj match {
-												case Full(field) => Text(field.name.is.toString)
-												case _ => Text("")
-											}})
-									 }
-									} else {
-										Text("") // there's gotta be a better way to return an empty nodeseq
-									}
-								}
-							)).toJs
-						case _ => Jx(<h1>Couldnt find discovery</h1>).toJs	
+								"dependencies" -> bindDependencies(nodeseq,discovery),
+								"dependents" -> bindDependents(nodeseq,discovery))).toJs
+						case _ => Str("Couldnt find discovery")
 					}
-				case _ => Jx(<h1>No template found</h1>).toJs	
+				case Empty => Jx(<h1>No template found</h1>).toJs	
 			}
 		)))
 	}
-	
+
 	def getMarkupForScientist(name: String) = {
 		Full(JavaScriptResponse(
 			JsCrVar("createMarkup", TemplateFinder.findAnyTemplate(List("scientist_facebox")) match {
@@ -98,12 +122,10 @@ object RestAPI  {
 											if (scientist.discoveries.size > 0) {
 												scientist.discoveries.flatMap{ discovery => 
 													bind("discovery", chooseTemplate("scientist","discoveries",nodeseq), 
-														"description" -> Text(discovery.description.is),
-														"year" -> Text(discovery.year.is.toString),
-														"field" -> { discovery.field.obj match {
-															case Full(field) => Text(field.name.is.toString)
-															case _ => Text("")
-														}})
+														"name" -> discovery.title.is,
+														"year" -> discovery.year.is.toString,
+														"id" -> discovery.id.is.toString,
+														"field" -> discovery.field.obj.map{field: Field => field.name.is.toString.trim}.openOr(""))
 													}
 											} else {
 												Text("")
@@ -132,10 +154,10 @@ object RestAPI  {
 							"id" -> discovery.id.toString,
 							"description" -> discovery.description.is,
 							"year" -> discovery.year.is.toString,
-							"field" -> discovery.field.obj.open_!.name.is
+							"field" -> discovery.field.obj.open_!.name.is.trim
 						)
 					}): _*),
-					"awards" -> JsArray((scientist.awards.map{ award => award.name.toString }): _*))
+					"awards" -> JsArray((scientist.awards.map{ award => Str(award.name.toString) }): _*))
 				case _ => JsObj("error" -> "No scientsit by this name")
 			}
 			)
@@ -151,9 +173,9 @@ object RestAPI  {
 				"name" -> scientist.name.is,
 				"nationality" -> scientist.nationality.is.toString,
 				"imageUrl" ->{if(scientist.imageName == null) "" else "/images/%s".format(scientist.imageName.toString)},
-				"awards" -> JsArray((scientist.awards.map{ award => award.name.toString }): _*)
+				"awards" -> JsArray((scientist.awards.map{ award => Str(award.name.toString) }): _*)
 			)}): _* ))
 		)
-	}
-	
-}
+	}}
+
+  

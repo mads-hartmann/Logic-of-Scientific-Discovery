@@ -8,7 +8,7 @@ import SHtml._
 import util._
 import net.liftweb.common._
 import java.util.Date
-import lib.{SafeSave}
+import sidewayscoding.lib.{SafeSave}
 import xml.{Text}
 import java.util.Date
 
@@ -55,6 +55,7 @@ class Scientist extends LongKeyedMapper[Scientist] with IdPK {
 	def discoveries = DiscoverySource.findAll(By(DiscoverySource.source,this.id)).map(_.discovery.obj.open_!)
 
 } 
+
 object Scientist extends Scientist with LongKeyedMetaMapper[Scientist] with SafeSave[Scientist] {
 	override def dbTableName = "Source"	
 		

@@ -6,7 +6,7 @@ import mapper._
 import http._
 import SHtml._ 
 import util._
-import lib.{SafeSave}
+import sidewayscoding.lib.{SafeSave}
 
 class DiscoveryDependency extends LongKeyedMapper[DiscoveryDependency] with IdPK {
 
@@ -28,9 +28,7 @@ object DiscoveryDependency extends DiscoveryDependency with LongKeyedMetaMapper[
 			Empty
 		}
 	}
-		
-		
-		
+				
 	def deleteConnections(discovery: Discovery) = {
 		(DiscoveryDependency.findAll(By(DiscoveryDependency.dependent,discovery)) :::
 		DiscoveryDependency.findAll(By(DiscoveryDependency.dependency,discovery))).foreach{ _.delete_!}

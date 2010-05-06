@@ -8,29 +8,63 @@
 	
 	var width = 0, // init when dom is ready
 		height = 0,
-		timespan = 2010,
+		minYear = -400, 
+		maxYear = 2010,
+		phaseShift = 0, // init when dom is ready
 		raphaelSlider = null,
 		scopeRect = null; 
 		
 
 	function xOffsetOfYear(year){
-		return width / timespan * year;
-	};
+		var pixelsWidthPrYear = width / (maxYear - minYear);
+		return pixelsWidthPrYear * year + phaseShift
+	}
+	
 	function yearOfXOffset(xoffset){
-		var result = (xoffset / (width / timespan));
+		var pixelsWidthPrYear = width / (maxYear - minYear),
+				result = ((xoffset-phaseShift) / pixelsWidthPrYear);
 		return result;
+	}
+	
+	
+	function createPathStringFromTo(fromDiscoveryGraphics, toDiscoveryGraphics){
+		return	"M" + fromDiscoveryGraphics.attrs.cx + 
+						" " + fromDiscoveryGraphics.attrs.cy + 
+						"L" + toDiscoveryGraphics.attrs.cx + 
+						" " + toDiscoveryGraphics.attrs.cy;	
 	};
 	
 	function draw(data) {
 		
-		$.each(data.discoveries,function(index,elem){
-			raphaelSlider.circle( xOffsetOfYear(elem.year), drawingHelper.yOffsetOfElementInCanvas(elem, $('#slider-box')), 3).attr({
-				"fill": drawingHelper.getColourFor(elem),
-				stroke: '#fff', 
-				"stroke-width" : 1
+		// create the discovery graphics
+		var graphics = $.map(data.discoveries,function(elem){
+			return {
+				"discovery" : elem,
+				"graphic" : raphaelSlider.circle( xOffsetOfYear(elem.year), drawingHelper.yOffsetOfElementInCanvas(elem, $('#slider-box')), 3).attr({
+											"fill": drawingHelper.getColourFor(elem),
+											"stroke" : '#fff', 
+											"stroke-width" : 1
+										})
+			}
+		});
+		
+		console.log(graphics); // @DEBUGGING
+		
+		// draw the lines between discoveries
+		$.each(graphics, function(index,graphicObj) {
+			
+			// get the dependencies
+			var dependencyGraphicsObjects = $.map(graphicObj.discovery.dependencies,function(dependencyObj){
+				return $.grep(graphics, function(gra) {
+					return gra.discovery.id == dependencyObj.id;
+				});
+			});
+			
+			$.each(dependencyGraphicsObjects, function(index,obj){
+				raphaelSlider.path(createPathStringFromTo(graphicObj.graphic,obj.graphic)).attr({'stroke':'#fff', 'stroke-width':1,"opacity" : 1.0});
 			});
 		});
-	};
+	}
 	
 	var createScopeRect = function(){
 		
@@ -58,7 +92,6 @@
 		});
 		
 		$(document).bind('scopeChanged', function(event,data) {
-
 			(function() { // move the scopeRect
 				if (data.doAnimate) {
 					scopeRect.animate({
@@ -83,6 +116,7 @@
 		(function() { // create canvas for slider 
 			width = $('#slider-box').width();
 			height = $('#slider-box').height();
+			phaseShift = width / (maxYear - minYear) * 400;
 			raphaelSlider = Raphael('slider-box', width, height);
 		}());
 		

@@ -40,6 +40,12 @@ var createDatastore = function(){
 		return obj.findTheoreticalDiscoveriesInTimespan(min,max);
 	};
 	
+	obj.findDiscoveryById = function( theId ){
+		return $.grep(discoveries,function(element) {
+			return (element.id == theId);
+		});
+	};
+	
 	$(document).bind('discoveriesLoaded', function(event,data){
 		discoveries = data.discoveries;	
 	});
