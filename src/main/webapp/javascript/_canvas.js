@@ -71,7 +71,7 @@
 
 		
 		$(document).bind('guiLoaded',function(){ // initialize & bind events
-
+			console.log("guiLoaded in _canvas.js");
 			(function(){ // gui is loaded, initialize
 				width = $('#paper').width();
 				height = $('#paper').height();

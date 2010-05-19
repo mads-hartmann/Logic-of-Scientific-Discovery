@@ -96,8 +96,8 @@ object DBVendor extends ConnectionManager {
  def newConnection(name : ConnectionIdentifier) = {
    try {
      Class.forName("com.mysql.jdbc.Driver")
-    // val dm = DriverManager.getConnection("jdbc:mysql://localhost:3306/logicOfScientificDiscovery?user=root&password=hummer19&characterEncoding=UTF-8") 
 		val dm = DriverManager.getConnection("jdbc:mysql://localhost:8889/logicOfScientificDiscovery?user=root&password=root&characterEncoding=UTF-8")
+		// val dm = DriverManager.getConnection("jdbc:mysql://ec2-174-129-9-255.compute-1.amazonaws.com:3306/LogicOfScientificDiscovery?user=logic&password=hummer19&characterEncoding=UTF-8")
      Full(dm)
    } catch {
      case e : Exception => e.printStackTrace; Empty

@@ -73,7 +73,7 @@
 			$('#scopeRect').css({
 				'position': 'absolute',
 				'height' : height,
-				'top' : $(document).height() - height,
+				'top' : $(document).height() - height - 5, // 5px is the border
 				'background' : '#fff',
 				'opacity' : 0.3,
 				'z-index' : 9999
@@ -112,7 +112,7 @@
 	};
 
 	$(document).bind('guiLoaded',function(){
-		
+		console.log("guiLoaded in _slider.js");
 		(function() { // create canvas for slider 
 			width = $('#slider-box').width();
 			height = $('#slider-box').height();
@@ -127,9 +127,7 @@
 			var year = yearOfXOffset(event.clientX);
 			$(document).trigger('valueChanged', { year: year}); // calculates the value wrong 
 		});
-		
-		
-		
+		console.log("after guiLoaded in _slider.js");
 	});
 	
 	// whenever the data is loaded. 
